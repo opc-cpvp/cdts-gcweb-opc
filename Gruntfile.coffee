@@ -352,7 +352,7 @@ module.exports = (grunt) ->
 					dest: "<%= coreDist %>"
 					expand: true
 				,
-					cwd: "node_modules"
+					cwd: "lib"
 					src: [
 						"wet-boew/**/*.*"
 					]

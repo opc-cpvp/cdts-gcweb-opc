@@ -1,0 +1,20 @@
+{
+  "name": "gcweb-opc-cdts",
+  "version": "4.0.26",
+  "homepage": "Web Experience Toolkit (WET): Canada.ca Theme",
+  "authors": [
+    "WET-BOEW Team"
+  ],
+  "description": "Web Experience Toolkit (WET) / Boîte à outils de l'expérience Web (BOEW)",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "bower.json",
+    "node_modules"
+  ],
+  "dependencies": {
+    "wet-boew": "https://github.com/wet-boew/wet-boew-dist.git#4.0.26"
+  },
+  "main": "splsh.html"
+}
