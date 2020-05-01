@@ -445,18 +445,6 @@ module.exports = (grunt) ->
 					"!package.json"
 				]
 
-			release:
-				options:
-					repo: "https://github.com/opc-cpvp/cdts-sgdc-releases.git"
-					branch: "master"
-					base: "releases"
-					clone: "cdts-sgdc-releases"
-					add: true
-					message: "<%= distDeployMessage %>"
-				src: [
-					"**/*.*"
-				]
-
 			travis_cdn:
 				options:
 					repo: process.env.CDN_REPO
