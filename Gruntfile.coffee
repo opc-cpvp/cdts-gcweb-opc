@@ -429,7 +429,7 @@ module.exports = (grunt) ->
 
 		"gh-pages":
 			options:
-				clone: "cdts-sgdc-dist"
+				clone: "cdts-themes-dist"
 				base: "<%= coreDist %>"
 
 			travis:
@@ -438,7 +438,7 @@ module.exports = (grunt) ->
 					branch: "<%= pkg.version %>"
 					message: "<%= distDeployMessage %>"
 					tag: ((
-						if process.env.TRAVIS_TAG then process.env.TRAVIS_TAG else false
+						if process.env.TRAVIS_TAG then process.env.TRAVIS_TAG + "-" + "<%= pkg.name.toLowerCase() %>" else false
 					))
 				src: [
 					"**/*.*"
@@ -453,7 +453,7 @@ module.exports = (grunt) ->
 					base: "<%= coreDist %>"
 					message: "<%= cdnDeployMessage %>"
 					tag: ((
-						if process.env.TRAVIS_TAG then process.env.TRAVIS_TAG else false
+						if process.env.TRAVIS_TAG then process.env.TRAVIS_TAG + "-" + "<%= pkg.name.toLowerCase() %>" else false
 					))
 				src: [
 					"**/*.*"
