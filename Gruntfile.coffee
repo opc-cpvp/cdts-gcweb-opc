@@ -65,10 +65,10 @@ module.exports = (grunt) ->
 		->
 			if process.env.TRAVIS_PULL_REQUEST is "false" and process.env.DIST_REPO isnt `undefined` and ( process.env.TRAVIS_TAG isnt "" or process.env.TRAVIS_BRANCH is "master" )
 				pkgOriginal = grunt.file.readJSON("package.json");
-				addToRepo = "cdts-sgdc-cdn";
-				writeTo = "dist/cdts-sgdc/package.json";
+				addToRepo = "cdts-themes-cdn";
+				writeTo = "dist/package.json";
 				pkg = {
-					name: "cdts-sgdc",
+					name: "cdts-gcweb-opc",
 					version: pkgOriginal.version,
 					description: pkgOriginal.name.toLowerCase() + " theme"
 					repository: {
@@ -362,6 +362,7 @@ module.exports = (grunt) ->
 					cwd: "node_modules/gcweb-opc"
 					src: [
 						"**/*.*"
+						"!package.json"
 					]
 					dest: "<%= coreDist %>"
 					expand: true
@@ -445,23 +446,11 @@ module.exports = (grunt) ->
 					"!package.json"
 				]
 
-			release:
-				options:
-					repo: "https://github.com/opc-cpvp/cdts-sgdc-releases.git"
-					branch: "master"
-					base: "releases"
-					clone: "cdts-sgdc-releases"
-					add: true
-					message: "<%= distDeployMessage %>"
-				src: [
-					"**/*.*"
-				]
-
 			travis_cdn:
 				options:
 					repo: process.env.CDN_REPO
 					branch: "<%= pkg.version %>"
-					clone: "cdts-sgdc-cdn"
+					clone: "cdts-themes-cdn"
 					base: "<%= coreDist %>"
 					message: "<%= cdnDeployMessage %>"
 					tag: ((

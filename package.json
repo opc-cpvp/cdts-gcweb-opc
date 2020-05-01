@@ -1,5 +1,5 @@
 {
-  "name": "gcweb-opc-cdts",
+  "name": "cdts-gcweb-opc",
   "version": "4.0.26",
   "description": "The purpose of the CDTS is essentially to deliver the presentation layer of the Canada.ca theme or Intranet.canada.ca theme to web assets. It decouples the presentation layer from the business logic of a static website or web application and allows rapid updates across multiple networks.",
   "main": "index.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/wet-boew/cdts-sgdc.git"
+    "url": "git+ssh://git@github.com/opc-cpvp/cdts-gcweb-opc.git"
   },
-  "author": "ESDC-EDSC",
+  "author": "OPC-CPVP",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wet-boew/cdts-sgdc/issues"
+    "url": "https://github.com/opc-cpvp/cdts-gcweb-opc/issues"
   },
-  "homepage": "https://github.com/wet-boew/cdts-sgdc#README",
+  "homepage": "https://github.com/opc-cpvp/cdts-gcweb-opc#README",
   "dependencies": {
     "gcweb-opc": "github:opc-cpvp/themes-cdn#v4.0.26-gcweb-opc"
   },
