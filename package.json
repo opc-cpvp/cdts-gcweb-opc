@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "grunt",
+    "postinstall": "bower update",
     "travis_script": "grunt dist",
     "travis_after_success": "grunt deploy"
   },
@@ -19,10 +20,10 @@
   },
   "homepage": "https://github.com/wet-boew/cdts-sgdc#README",
   "dependencies": {
-    "gcweb-opc": "github:opc-cpvp/themes-cdn#v4.0.26-gcweb-opc",
-    "wet-boew": "github:wet-boew/wet-boew-cdn#v4.0-dist"
+    "gcweb-opc": "github:opc-cpvp/themes-cdn#v4.0.26-gcweb-opc"
   },
   "devDependencies": {
+    "bower": "^1.8.8",
     "grunt": "^1.0.4",
     "grunt-banner": "^0.6.0",
     "compression": "^1.7.4",
