@@ -358,10 +358,9 @@ module.exports = (grunt) ->
 					dest: "<%= coreDist %>"
 					expand: true
 				,
-					cwd: "node_modules/gcweb-opc"
+					cwd: "node_modules"
 					src: [
-						"**/*.*"
-						"!package.json"
+						"gcweb-opc/**/*.*"
 					]
 					dest: "<%= coreDist %>"
 					expand: true
