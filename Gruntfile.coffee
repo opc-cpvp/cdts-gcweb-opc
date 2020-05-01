@@ -88,7 +88,6 @@ module.exports = (grunt) ->
 					"copy:release"
 					"gh-pages:travis"
 					"gh-pages:travis_cdn"
-					"gh-pages:release"
 				];
 	)
 
