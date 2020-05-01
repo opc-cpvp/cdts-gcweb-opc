@@ -63,23 +63,23 @@
 {template .refTop}
 		{if isNonnull($webAnalytics)}{/if}
 		<!--[if gte IE 9 | !IE ]><!-->
-		<link href='{call .environment data="all" /}assets/favicon.ico' rel="icon" type="image/x-icon" />
-		<link rel="stylesheet" href='{call .environment data="all" /}css/theme.min.css' />
+		<link href='{call .environment data="all" /}gcweb-opc/assets/favicon.ico' rel="icon" type="image/x-icon" />
+		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/theme.min.css' />
 		<link rel="stylesheet" href='{call .environment data="all" /}cdts/css/cdtsfixes.css'>
 		{if $isApplication == true}
 		<link rel="stylesheet" href='{call .environment data="all" /}cdts/css/cdtsapps.css'>
 		{/if}
 		<!--<![endif]-->
 		<!--[if lt IE 9]>
-		<link href='{call .environment data="all" /}assets/favicon.ico' rel="shortcut icon" />
-		<link rel="stylesheet" href='{call .environment data="all" /}css/ie8-theme.min.css' />
+		<link href='{call .environment data="all" /}gcweb-opc/assets/favicon.ico' rel="shortcut icon" />
+		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/ie8-theme.min.css' />
 		<script src='{call .environment data="all" /}wet-boew/js/jquery/1.11.1/jquery.min.js'></script>
 		<script src='{call .environment data="all" /}wet-boew/js/ie8-wet-boew.min.js'></script>
 		<![endif]-->
 		<!--[if lte IE 9]>
 		<![endif]-->
-		<link rel="stylesheet" href='{call .environment data="all" /}css/opc-style.css' />
-		<link rel="stylesheet" href='{call .environment data="all" /}cms-css/feedback.css' />
+		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/opc-style.css' />
+		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/cms-css/feedback.css' />
 {/template}
 
 /**
@@ -127,8 +127,8 @@
 				<div class="row">
 					<div class="brand col-xs-8 col-sm-9 col-md-5">
 						{if $siteMenu != false}<a href="https://priv.gc.ca/fr/" property="url">{/if}
-							<img class="visible-print-block" src='{call .environment data="all" /}assets/opc-blk-fr.png' alt="">
-							<img src='{call .environment data="all" /}assets/opc-wht-fr.png' class="hidden-print img img-responsive" alt="OPC Logo"/>
+							<img class="visible-print-block" src='{call .environment data="all" /}gcweb-opc/assets/opc-blk-fr.png' alt="">
+							<img src='{call .environment data="all" /}gcweb-opc/assets/opc-wht-fr.png' class="hidden-print img img-responsive" alt="OPC Logo"/>
 							<span class="wb-inv"> Commissariat à la protection de la vie privée du Canada</span>
 						{if $siteMenu != false}</a>{/if}
 					</div>
@@ -492,7 +492,7 @@
 				<div class="container">
 					<div class="row ">
 						<div class="col-md-6">
-							<img src='{call .environment data="all" /}assets/opc-blk-fr.png' class="img img-responsive" alt="Logo du Commissariat" />
+							<img src='{call .environment data="all" /}gcweb-opc/assets/opc-blk-fr.png' class="img img-responsive" alt="Logo du Commissariat" />
 							<span class="wb-inv">Commissariat à la protection de la vie privée du Canada</span>
 						</div>
 						<div class="col-md-6 tofpg text-right">
@@ -525,8 +525,8 @@
 		<!--[if lt IE 9]>
 		<script src='{call .environment data="all" /}wet-boew/js/ie8-wet-boew2.min.js'></script>
 		<![endif]-->
-		<script src='{call .environment data="all" /}js/theme.min.js'></script>
-		<script src='{call .environment data="all" /}cms-scripts/feedback.js'></script>
+		<script src='{call .environment data="all" /}gcweb-opc/js/theme.min.js'></script>
+		<script src='{call .environment data="all" /}gcweb-opc/cms-scripts/feedback.js'></script>
 		{if $exitScript == true}
 		<script data-id="exitScript" data-token="{$exitURL}" data-token-domains="{$exitDomains}" data-token-modal="{$displayModal}">clickA();</script>
 		<a id="sExitModalLink" class="wb-lbx lbx-modal wb-inv" title="" href="#sExitModal" tabindex="-1">Avis de sortie sécurisée</a>
