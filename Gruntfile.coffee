@@ -184,7 +184,7 @@ module.exports = (grunt) ->
 					"<%= coreTmp %>/_src/soy/gcweb-opc/en/appPage-en.js"
 					"<%= coreTmp %>/_src/soy/gcweb-opc/bilingual/serverPage.js"
 				]
-				dest: "<%= coreDist %>/wet-en.js"
+				dest: "<%= coreDist %>/cdts/compiled/wet-en.js"
 
 			gcwebopcFr:
 				options:
@@ -194,7 +194,7 @@ module.exports = (grunt) ->
 					"<%= coreTmp %>/_src/soy/gcweb-opc/fr/appPage-fr.js"
 					"<%= coreTmp %>/_src/soy/gcweb-opc/bilingual/serverPage.js"
 				]
-				dest: "<%= coreDist %>/wet-fr.js"
+				dest: "<%= coreDist %>/cdts/compiled/wet-fr.js"
 
 		# Minify
 		uglify:
@@ -341,7 +341,7 @@ module.exports = (grunt) ->
 					src: [
 						"soyutils.js"
 					]
-					dest: "<%= coreDist %>"
+					dest: "<%= coreDist %>/cdts/compiled/"
 					expand: true
 				,
 					cwd: "_src/html"
