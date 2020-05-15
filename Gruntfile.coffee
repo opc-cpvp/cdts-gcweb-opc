@@ -434,7 +434,7 @@ module.exports = (grunt) ->
 			travis:
 				options:
 					repo: process.env.DIST_REPO
-					branch: "<%= pkg.version %>"
+					branch: "<%= pkg.name %>"
 					message: "<%= distDeployMessage %>"
 					tag: ((
 						if process.env.TRAVIS_TAG then process.env.TRAVIS_TAG + "-" + "<%= pkg.name.toLowerCase() %>" else false
