@@ -441,7 +441,6 @@ module.exports = (grunt) ->
 					))
 				src: [
 					"**/*.*"
-					"!package.json"
 				]
 
 			travis_cdn:
@@ -456,7 +455,6 @@ module.exports = (grunt) ->
 					))
 				src: [
 					"**/*.*"
-					"!package.json"
 				]
 
 	require( "load-grunt-tasks" )( grunt, requireResolution: true )
