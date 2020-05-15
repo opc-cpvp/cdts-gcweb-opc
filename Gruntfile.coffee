@@ -447,7 +447,7 @@ module.exports = (grunt) ->
 			travis_cdn:
 				options:
 					repo: process.env.CDN_REPO
-					branch: "<%= pkg.version %>"
+					branch: "<%= pkg.name %>"
 					clone: "cdts-themes-cdn"
 					base: "<%= coreDist %>"
 					message: "<%= cdnDeployMessage %>"
