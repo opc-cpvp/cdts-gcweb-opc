@@ -61,7 +61,6 @@
  * @param? isApplication Used to determine if this will use the application templates (true/false).
  */
 {template .refTop}
-		{if isNonnull($webAnalytics)}{/if}
 		<!--[if gte IE 9 | !IE ]><!-->
 		<link href='{call .environment data="all" /}gcweb-opc/assets/favicon.ico' rel="icon" type="image/x-icon" />
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/theme.min.css' />
@@ -80,6 +79,42 @@
 		<![endif]-->
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/opc-style.css' />
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/cms-css/feedback.css' />
+
+		{if isNonnull($webAnalytics)}
+			<script type="text/javascript">
+				var _paq = (function (paq) {lb}
+					var removeTrailingSlash = function(site) {lb}
+						// if site has an end slash (like: www.example.com/),
+						// then remove it and return the site without the end slash
+						return site.replace(/\/$/, ''); // Match a forward slash / at the end of the string ($)
+					{rb}
+
+					{foreach $aa in $webAnalytics}
+						// Push the english url in lower case for consistent results
+						{if $aa.environment == 'staging'}
+							var u = "https://staging-www.priv.gc.ca/m/";
+						{else}
+							var u = "https://priv.gc.ca/m/";
+						{/if}
+						var u = "https://priv.gc.ca/m/";
+						var url = removeTrailingSlash(window.location.href).toLowerCase();
+
+						paq.push(['setCustomDimension', '2', url]);
+						paq.push(['setCustomUrl', url]);
+						paq.push(['enableLinkTracking']);
+						paq.push(['trackPageView']);
+						paq.push(['trackVisibleContentImpressions']);
+						paq.push(['setTrackerUrl', u + 'm.php']);
+						paq.push(['setSiteId',  '{$aa.siteId}']);
+					{/foreach}
+
+					var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+					g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = u + 'm.js'; s.parentNode.insertBefore(g, s);
+
+					return paq;
+				{rb})(window._paq || []);
+    		</script>
+		{/if}
 {/template}
 
 /**
@@ -648,5 +683,39 @@
 		<![endif]-->
 		<script src='{call .environment data="all" /}gcweb-opc/js/theme.min.js'></script>
 		<link rel="stylesheet" href='{call .environment data="all" /}cdts/css/cdtsfixes.css'>
-		{if isNonnull($webAnalytics)}{/if}
+		{if isNonnull($webAnalytics)}
+			<script type="text/javascript">
+				var _paq = (function (paq) {lb}
+					var removeTrailingSlash = function(site) {lb}
+						// if site has an end slash (like: www.example.com/),
+						// then remove it and return the site without the end slash
+						return site.replace(/\/$/, ''); // Match a forward slash / at the end of the string ($)
+					{rb}
+
+					{foreach $aa in $webAnalytics}
+						// Push the english url in lower case for consistent results
+						{if $aa.environment == 'staging'}
+							var u = "https://staging-www.priv.gc.ca/m/";
+						{else}
+							var u = "https://priv.gc.ca/m/";
+						{/if}
+						var u = "https://priv.gc.ca/m/";
+						var url = removeTrailingSlash(window.location.href).toLowerCase();
+
+						paq.push(['setCustomDimension', '2', url]);
+						paq.push(['setCustomUrl', url]);
+						paq.push(['enableLinkTracking']);
+						paq.push(['trackPageView']);
+						paq.push(['trackVisibleContentImpressions']);
+						paq.push(['setTrackerUrl', u + 'm.php']);
+						paq.push(['setSiteId',  '{$aa.siteId}']);
+					{/foreach}
+
+					var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+					g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = u + 'm.js'; s.parentNode.insertBefore(g, s);
+
+					return paq;
+				{rb})(window._paq || []);
+    		</script>
+		{/if}
 {/template}
