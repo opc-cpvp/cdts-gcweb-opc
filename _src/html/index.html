@@ -19,8 +19,9 @@
 		<!-- Write closure template -->
 		<script>
 			document.write(wet.builder.refTop({
-                "isApplication" : true,
-				"cdnPath" : "./"
+				"cdnPath" : "./",
+				"webAnalytics": [{"environment": "staging", "siteId": 6}],
+                "isApplication" : true
 			}));
 		</script>
 	</head>
