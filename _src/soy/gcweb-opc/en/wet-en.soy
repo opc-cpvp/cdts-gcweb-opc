@@ -87,7 +87,7 @@
 						// if site has an end slash (like: www.example.com/),
 						// then remove it and return the site without the end slash
 						return site.replace(/\/$/, ''); // Match a forward slash / at the end of the string ($)
-					{rb}
+					{rb};
 
 					{foreach $aa in $webAnalytics}
 						// Push the english url in lower case for consistent results
@@ -96,7 +96,6 @@
 						{else}
 							var u = "https://priv.gc.ca/m/";
 						{/if}
-						var u = "https://priv.gc.ca/m/";
 						var url = removeTrailingSlash(window.location.href).toLowerCase();
 
 						paq.push(['setCustomDimension', '2', url]);
@@ -690,7 +689,7 @@
 						// if site has an end slash (like: www.example.com/),
 						// then remove it and return the site without the end slash
 						return site.replace(/\/$/, ''); // Match a forward slash / at the end of the string ($)
-					{rb}
+					{rb};
 
 					{foreach $aa in $webAnalytics}
 						// Push the english url in lower case for consistent results
@@ -699,7 +698,6 @@
 						{else}
 							var u = "https://priv.gc.ca/m/";
 						{/if}
-						var u = "https://priv.gc.ca/m/";
 						var url = removeTrailingSlash(window.location.href).toLowerCase();
 
 						paq.push(['setCustomDimension', '2', url]);
