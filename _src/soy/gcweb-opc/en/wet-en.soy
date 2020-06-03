@@ -98,13 +98,25 @@
 						{/if}
 						var url = removeTrailingSlash(window.location.href).toLowerCase();
 
-						paq.push(['setCustomDimension', '2', url]);
+						paq.push(['setCustomDimension', 2, url]);
 						paq.push(['setCustomUrl', url]);
 						paq.push(['enableLinkTracking']);
 						paq.push(['trackPageView']);
 						paq.push(['trackVisibleContentImpressions']);
 						paq.push(['setTrackerUrl', u + 'm.php']);
 						paq.push(['setSiteId',  '{$aa.siteId}']);
+
+						{if isNonnull($aa.customDimensions)} 
+							{foreach $dimension in $aa.customDimensions}
+								paq.push(['setCustomDimension', {$dimension.id}, '{$dimension.value}']);
+							{/foreach}
+						{/if}
+
+						{if isNonnull($aa.customVariables)}
+							{foreach $variable in $aa.customVariables}
+								paq.push(['setCustomVariable', {index($variable) + 1}, '{$variable.name}', '{$variable.value}', '{$variable.scope}']);
+							{/foreach}
+						{/if}
 					{/foreach}
 
 					var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
@@ -700,13 +712,25 @@
 						{/if}
 						var url = removeTrailingSlash(window.location.href).toLowerCase();
 
-						paq.push(['setCustomDimension', '2', url]);
+						paq.push(['setCustomDimension', 2, url]);
 						paq.push(['setCustomUrl', url]);
 						paq.push(['enableLinkTracking']);
 						paq.push(['trackPageView']);
 						paq.push(['trackVisibleContentImpressions']);
 						paq.push(['setTrackerUrl', u + 'm.php']);
 						paq.push(['setSiteId',  '{$aa.siteId}']);
+
+						{if isNonnull($aa.customDimensions)} 
+							{foreach $dimension in $aa.customDimensions}
+								paq.push(['setCustomDimension', {$dimension.id}, '{$dimension.value}']);
+							{/foreach}
+						{/if}
+
+						{if isNonnull($aa.customVariables)}
+							{foreach $variable in $aa.customVariables}
+								paq.push(['setCustomVariable', {index($variable) + 1}, '{$variable.name}', '{$variable.value}', '{$variable.scope}']);
+							{/foreach}
+						{/if}
 					{/foreach}
 
 					var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
