@@ -112,9 +112,8 @@
 						{/if}
 
 						{if isNonnull($aa.customVariables)} 
-							{let $i: 1 /}
 							{foreach $variable in $aa.customVariables}
-								paq.push(['setCustomVariable', {$i++}, '{$variable.name}', '{$variable.value}', '{$variable.scope}']);
+								paq.push(['setCustomVariable', {index($variable) + 1}, '{$variable.name}', '{$variable.value}', '{$variable.scope}']);
 							{/foreach}
 						{/if}
 					{/foreach}
