@@ -49,9 +49,23 @@
  * @param cdnPath used to set working path to assets.
 */
 {template .environment}
-{if $cdnEnv=='esdcqat' or $cdnEnv=='esdcprod' or $cdnEnv=='esdcnonprod'}/cdts/
-{elseif isNonnull($cdnPath)}{$cdnPath}
+{switch $cdnEnv}
+{case 'esdcqat','esdcprod','esdcnonprod'}/cdts/
+{case 'OPC_UMBRACO','dev'}/app/cls/WET/gcweb-opc/{THEME_VERSION}/
+{default}
+{if isNonnull($cdnPath)}{$cdnPath}
 {else}https://priv.gc.ca/app/cls/WET/gcweb-opc/{THEME_VERSION}/
+{/if}
+{/switch}
+{/template}
+
+/**
+ * This is the host of the url
+ * @param cdnEnv Used to switch between envrionments
+*/
+{template .urlhost}
+{if isNonnull($cdnEnv) and ($cdnEnv == 'OPC_UMBRACO' or $cdnEnv=='dev')}/
+{else}https://priv.gc.ca/
 {/if}
 {/template}
 
@@ -77,8 +91,8 @@
 		<![endif]-->
 		<!--[if lte IE 9]>
 		<![endif]-->
-		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/opc-style.css' />
-		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/cms-css/feedback.css' />
+		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/assets/css/opc-style.css' />
+		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/feedback/feedback.css' />
 		{if isNonnull($webAnalytics)}
 			<script type="text/javascript">
 				var _paq = (function (paq) {lb}
@@ -171,7 +185,7 @@
 
 				<div class="row">
 					<div class="brand col-xs-8 col-sm-9 col-md-5">
-						{if $siteMenu != false}<a href="https://priv.gc.ca/fr/" property="url">{/if}
+						{if $siteMenu != false}<a href="{call .urlhost data="all" /}fr/" property="url">{/if}
 							<img class="visible-print-block" src='{call .environment data="all" /}gcweb-opc/assets/opc-blk-fr.png' alt="">
 							<img src='{call .environment data="all" /}gcweb-opc/assets/opc-wht-fr.png' class="hidden-print img img-responsive" alt="OPC Logo"/>
 							<span class="wb-inv"> Commissariat à la protection de la vie privée du Canada</span>
@@ -197,7 +211,7 @@
 					{if $search != false}
 					<section id="wb-srch" class="col-xs-7 text-right visible-md visible-lg" aria-labelledby="search-section">
 						<h2 id="search-section">Recherche</h2>
-						<form action="https://priv.gc.ca/fr/recherche" class="form-inline" enctype="multipart/form-data" method="post" name="cse-search-box" role="search">
+						<form action="{call .urlhost data="all" /}fr/recherche" class="form-inline" enctype="multipart/form-data" method="post" name="cse-search-box" role="search">
 							<div class="form-group">
 								<label for="wb-srch-q" class="wb-inv">Recherchez le site Web</label>
 								<input id="wb-srch-q" list="wb-srch-q-ac" class="wb-srch-q form-control" name="t" type="search" value="" size="27" maxlength="150" placeholder="Rechercher dans priv.gc.ca" />
@@ -217,17 +231,17 @@
 			</div>
 
 			{if $siteMenu != false}
-			<nav id="wb-sm" data-ajax-replace="https://priv.gc.ca/ajax/sitemenu-fr" data-trgt="mb-pnl" class="wb-menu visible-md visible-lg" typeof="SiteNavigationElement" aria-labelledby="topics-menu-section">
+			<nav id="wb-sm" data-ajax-replace="{call .urlhost data="all" /}ajax/sitemenu-fr" data-trgt="mb-pnl" class="wb-menu visible-md visible-lg" typeof="SiteNavigationElement" aria-labelledby="topics-menu-section">
 				<div class="container nvbar">
 					<h2 id="topics-menu-section">Menu des sujets</h2>
 					<div class="row">
 						<ul class="list-inline menu">
-							<li><a href="https://priv.gc.ca/fr/pour-les-individus/" class="item">Pour les individus</a></li>
-							<li><a href="https://priv.gc.ca/fr/pour-les-entreprises/" class="item">Pour les entreprises</a></li>
-							<li><a href="https://priv.gc.ca/fr/pour-les-institutions/" class="item">Pour les institutions fédérales</a></li>
-							<li><a href="https://priv.gc.ca/fr/signaler-un-probleme/" class="item">Signaler un problème</a></li>
-							<li><a href="https://priv.gc.ca/fr/mesures-et-decisions-prises-par-le-commissariat/" class="item">Mesures et décisions prises par le Commissariat</a></li>
-							<li><a href="https://priv.gc.ca/fr/a-propos-du-commissariat/" class="item">À propos du Commissariat</a></li>
+							<li><a href="{call .urlhost data="all" /}fr/pour-les-individus/" class="item">Pour les individus</a></li>
+							<li><a href="{call .urlhost data="all" /}fr/pour-les-entreprises/" class="item">Pour les entreprises</a></li>
+							<li><a href="{call .urlhost data="all" /}fr/pour-les-institutions/" class="item">Pour les institutions fédérales</a></li>
+							<li><a href="{call .urlhost data="all" /}fr/signaler-un-probleme/" class="item">Signaler un problème</a></li>
+							<li><a href="{call .urlhost data="all" /}fr/mesures-et-decisions-prises-par-le-commissariat/" class="item">Mesures et décisions prises par le Commissariat</a></li>
+							<li><a href="{call .urlhost data="all" /}fr/a-propos-du-commissariat/" class="item">À propos du Commissariat</a></li>
 						</ul>
 					</div>
 				</div>
@@ -245,8 +259,6 @@
 							{foreach $item in $breadcrumbs}
 							<li>{if isNonnull($item.acronym)}<abbr title="{$item.acronym}">{/if}{if isNonnull($item.href)}<a href="{$item.href}">{/if}{$item.title}{if isNonnull($item.href)}</a>{/if}{if isNonnull($item.acronym)}</abbr>{/if}</li>
 							{/foreach}
-							{else}
-							<li><a href="https://priv.gc.ca/fr/">Accueil</a></li>
 							{/if}
 						</ol>
 					</div>
@@ -293,7 +305,7 @@
 													<span class="prefix">Erreur&nbsp;1:&nbsp;</span>Aucune sélection n’a été faite. Vous devez choisir au moins une réponse.
 												</span>
 											</strong>
-											<form action="https://priv.gc.ca/fr/pour-les-individus/" enctype="multipart/form-data" id="reportAProblemForm" method="post">
+											<form action="{call .urlhost data="all" /}fr/pour-les-individus/" enctype="multipart/form-data" id="reportAProblemForm" method="post">
 												<input id="ProblemContentId" name="ProblemContentId" type="hidden" value="" />
 												<input name="__RequestVerificationToken" type="hidden" value="" />
 												<fieldset id="reportAProblemInputs">
@@ -331,7 +343,7 @@
 														<ul>
 															<li>
 																<small>
-																	<strong>Vous ne recevrez pas de réponse.</strong> Pour toute question, veuillez <a href="https://priv.gc.ca/fr/communiquer-avec-le-commissariat/">communiquer avec le Commissariat à la protection de la vie privée</a>.
+																	<strong>Vous ne recevrez pas de réponse.</strong> Pour toute question, veuillez <a href="{call .urlhost data="all" /}fr/communiquer-avec-le-commissariat/">communiquer avec le Commissariat à la protection de la vie privée</a>.
 																</small>
 															</li>
 															<li>
@@ -341,7 +353,7 @@
 															</li>
 															<li>
 																<small>
-																	<strong>Pour plus d’information au sujet de cette fonctionnalité</strong>, veuillez consulter nos <a href="https://priv.gc.ca/fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/">conditions d’utilisation</a>.
+																	<strong>Pour plus d’information au sujet de cette fonctionnalité</strong>, veuillez consulter nos <a href="{call .urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/">conditions d’utilisation</a>.
 																</small>
 															</li>
 														</ul>
@@ -434,11 +446,11 @@
 							<h3 id="about-opc-section">À propos du Commissariat</h3>
 							<p>Le commissaire à la protection de la vie privée du Canada est un agent du Parlement qui a pour mission de protéger et de promouvoir le droit à la vie privée.</p>
 							<ul class="list-unstyled">
-								<li><a href="https://priv.gc.ca/fr/a-propos-du-commissariat/qui-nous-sommes/">Qui nous sommes</a></li>
-								<li><a href="https://priv.gc.ca/fr/a-propos-du-commissariat/ce-que-nous-faisons/">Ce que nous faisons</a></li>
-								<li><a href="https://priv.gc.ca/fr/a-propos-du-commissariat/rapports-operationnels-du-commissariat/">Rapports sur les activités du Commissariat</a></li>
-								<li><a href="https://priv.gc.ca/fr/a-propos-du-commissariat//publications/">Publications</a></li>
-								<li><a href="https://priv.gc.ca/fr/a-propos-du-commissariat/travailler-au-commissariat">Travailler au Commissariat</a></li>
+								<li><a href="{call .urlhost data="all" /}fr/a-propos-du-commissariat/qui-nous-sommes/">Qui nous sommes</a></li>
+								<li><a href="{call .urlhost data="all" /}fr/a-propos-du-commissariat/ce-que-nous-faisons/">Ce que nous faisons</a></li>
+								<li><a href="{call .urlhost data="all" /}fr/a-propos-du-commissariat/rapports-operationnels-du-commissariat/">Rapports sur les activités du Commissariat</a></li>
+								<li><a href="{call .urlhost data="all" /}fr/a-propos-du-commissariat//publications/">Publications</a></li>
+								<li><a href="{call .urlhost data="all" /}fr/a-propos-du-commissariat/travailler-au-commissariat">Travailler au Commissariat</a></li>
 							</ul>
 						</section>
 					</div>
@@ -447,9 +459,9 @@
 							<h3 id="opc-news-section">Nouvelles du Commissariat</h3>
 							<p>Soyez informés des annonces et des activités du Commissariat à la protection de la vie privée du Canada de même que des événements auxquels il participe.</p>
 							<ul class="list-unstyled">
-								<li><a href="https://priv.gc.ca/fr/nouvelles-du-commissariat/nouvelles-et-annonces">Nouvelles et annonces</a></li>
-								<li><a href="https://priv.gc.ca/fr/nouvelles-du-commissariat/evenements-lies-a-la-protection-de-la-vie-privee/">Événements liés à la protection de la vie privée</a></li>
-								<li><a href="https://priv.gc.ca/fr/nouvelles-du-commissariat/allocutions/">Allocutions</a></li>
+								<li><a href="{call .urlhost data="all" /}fr/nouvelles-du-commissariat/nouvelles-et-annonces">Nouvelles et annonces</a></li>
+								<li><a href="{call .urlhost data="all" /}fr/nouvelles-du-commissariat/evenements-lies-a-la-protection-de-la-vie-privee/">Événements liés à la protection de la vie privée</a></li>
+								<li><a href="{call .urlhost data="all" /}fr/nouvelles-du-commissariat/allocutions/">Allocutions</a></li>
 							</ul>
 						</section>
 					</div>
@@ -457,12 +469,12 @@
 						<section aria-labelledby="respect-section">
 							<h3 id="respect-section">Votre vie privée</h3>
 							<p><strong>Nous respectons votre vie privée.</strong></p>
-							<p>Lisez notre <a href="https://priv.gc.ca/fr/protection-de-la-vie-privee-et-transparence-au-commissariat/pp/">Politique sur la protection des renseignements personnels</a> et nos <a href="https://priv.gc.ca/fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/">Conditions d’utilisation</a> pour en savoir plus sur la protection de vos renseignements personnels et votre droit à la vie privée lorsque vous naviguez sur le site Web <a href="https://priv.gc.ca/">priv.gc.ca</a> ou que vous communiquez avec le Commissariat à la protection de la vie privée du Canada.</p>
+							<p>Lisez notre <a href="{call .urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/pp/">Politique sur la protection des renseignements personnels</a> et nos <a href="{call .urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/">Conditions d’utilisation</a> pour en savoir plus sur la protection de vos renseignements personnels et votre droit à la vie privée lorsque vous naviguez sur le site Web <a href="{call .urlhost data="all" /}">priv.gc.ca</a> ou que vous communiquez avec le Commissariat à la protection de la vie privée du Canada.</p>
 						</section>
 						<section aria-labelledby="transparency-section">
 							<h3 id="transparency-section">Transparence</h3>
 							<ul class="list-unstyled">
-								<li><a href="https://priv.gc.ca/fr/protection-de-la-vie-privee-et-transparence-au-commissariat/divulgation-proactive/">Divulgation proactive</a></li>
+								<li><a href="{call .urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/divulgation-proactive/">Divulgation proactive</a></li>
 							</ul>
 						</section>
 					</div>
@@ -475,19 +487,21 @@
 									{foreach $link in $contactLinks}
 										{if isFirst($link)}
 											<li><a href="{$link.href}">Contactez-nous</a></li>
+										{else}
+											<li><a href="#"></a></li>
 										{/if}
 									{/foreach}
 								</ul>
 							{else}
-								<a href="https://priv.gc.ca/fr/communiquer-avec-le-commissariat/" role="button" class="btn btn-default active">Communiquer avec le Commissariat</a>
+								<a href="{call .urlhost data="all" /}fr/communiquer-avec-le-commissariat/" role="button" class="btn btn-default active">Communiquer avec le Commissariat</a>
 							{/if}
 						</section>
 						<section aria-labelledby="stay-connected-section">
 							<h3 id="stay-connected-section">Restez branchés</h3>
 							<ul class="list-unstyled">
-								<li><span class="fa fa-comments"></span> <a href="https://priv.gc.ca/fr/blogue">Blogue du Commissariat</a></li>
+								<li><span class="fa fa-comments"></span> <a href="{call .urlhost data="all" /}fr/blogue">Blogue du Commissariat</a></li>
 								<li><span class="fa fa-linkedin-square"></span> <a href="https://www.linkedin.com/company/office-of-the-privacy-commissioner-of-canada">LinkedIn du Commissariat</a></li>
-								<li><span class="fa fa-rss-square"></span> <a href="https://priv.gc.ca/fr/fils-rss-du-commissariat/">Fils RSS du Commissariat</a></li>
+								<li><span class="fa fa-rss-square"></span> <a href="{call .urlhost data="all" /}fr/fils-rss-du-commissariat/">Fils RSS du Commissariat</a></li>
 								<li><span class="fa fa-twitter"></span> <a href="https://twitter.com/PrivacyPrivee">Twitter du Commissariat</a></li>
 								<li><span class="fa fa-youtube"></span> <a href="https://www.youtube.com/user/PrivacyComm">Chaîne YouTube du Commissariat</a></li>
 							</ul>
@@ -503,31 +517,31 @@
 				{if isNonnull($contactLinks)}
 					{foreach $link in $contactLinks}
 						{if isFirst($link)}
-							<li><a {if $link.href} href="{$link.href}"{else} href="https://priv.gc.ca/fr/communiquer-avec-le-commissariat/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Coordonnées{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
+							<li><a {if $link.href} href="{$link.href}"{else} href="{call .urlhost data="all" /}fr/communiquer-avec-le-commissariat/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Coordonnées{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
 						{/if}
 					{/foreach}
 				{else}
-					<li><a href="https://priv.gc.ca/fr/communiquer-avec-le-commissariat/">Coordonnées</a></li>
+					<li><a href="{call .urlhost data="all" /}fr/communiquer-avec-le-commissariat/">Coordonnées</a></li>
 				{/if}
 
 				{if isNonnull($termsLink)}
 					{foreach $link in $termsLink}
 						{if isFirst($link)}
-							<li><a {if $link.href} href="{$link.href}"{else} href="https://priv.gc.ca/fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Avis{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
+							<li><a {if $link.href} href="{$link.href}"{else} href="{call .urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Avis{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
 						{/if}
 					{/foreach}
 				{else}
-					<li><a href="https://priv.gc.ca/fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/">Avis</a></li>
+					<li><a href="{call .urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/">Avis</a></li>
 				{/if}
 
 				{if isNonnull($privacyLink)}
 					{foreach $link in $privacyLink}
 						{if isFirst($link)}
-							<li><a {if $link.href} href="{$link.href}"{else} href="https://priv.gc.ca/fr/protection-de-la-vie-privee-et-transparence-au-commissariat/pp/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Confidentialité{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
+							<li><a {if $link.href} href="{$link.href}"{else} href="{call .urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/pp/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Confidentialité{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
 						{/if}
 					{/foreach}
 				{else}
-					<li><a href="https://priv.gc.ca/fr/protection-de-la-vie-privee-et-transparence-au-commissariat/pp/">Confidentialité</a></li>
+					<li><a href="{call .urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/pp/">Confidentialité</a></li>
 				{/if}
 				</ul>
 			</nav>
@@ -571,7 +585,7 @@
 		<script src='{call .environment data="all" /}wet-boew/js/ie8-wet-boew2.min.js'></script>
 		<![endif]-->
 		<script src='{call .environment data="all" /}gcweb-opc/js/theme.min.js'></script>
-		<script src='{call .environment data="all" /}gcweb-opc/cms-scripts/feedback.js'></script>
+		<script src='{call .environment data="all" /}gcweb-opc/feedback/feedback.js'></script>
 		{if $exitScript == true}
 		<script src='{call .environment data="all" /}cdts/js/exitScript.js'></script>
 		<script data-id="exitScript" data-token="{$exitURL}" data-token-domains="{$exitDomains}" data-token-modal="{$displayModal}">clickA();</script>
