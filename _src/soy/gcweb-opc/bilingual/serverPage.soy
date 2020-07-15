@@ -14,6 +14,49 @@
 		<script src='{call wet.builder.environment data="all" /}wet-boew/js/jquery/1.11.1/jquery.min.js'></script>
 		<script src='{call wet.builder.environment data="all" /}wet-boew/js/ie8-wet-boew.min.js'></script>
 		<![endif]-->
+
+		{if isNonnull($webAnalytics)}
+			<script type="text/javascript">
+				var _paq = (function (paq) {lb}
+					var removeTrailingSlash = function(site) {lb}
+						// if site has an end slash (like: www.example.com/),
+						// then remove it and return the site without the end slash
+						return site.replace(/\/$/, ''); // Match a forward slash / at the end of the string ($)
+					{rb};
+
+					{foreach $aa in $webAnalytics}
+						// Push the english url in lower case for consistent results
+						var url = removeTrailingSlash(window.location.href).toLowerCase();
+
+						paq.push(['setCustomDimension', 2, url]);
+						paq.push(['setCustomUrl', url]);
+						paq.push(['enableLinkTracking']);
+						paq.push(['trackPageView']);
+						paq.push(['trackVisibleContentImpressions']);
+						paq.push(['setTrackerUrl', '/m/m.php']);
+						paq.push(['setSiteId',  '{$aa.siteId}']);
+
+						{if isNonnull($aa.customDimensions)} 
+							{foreach $dimension in $aa.customDimensions}
+								paq.push(['setCustomDimension', {$dimension.id}, '{$dimension.value}']);
+							{/foreach}
+						{/if}
+
+						{if isNonnull($aa.customVariables)}
+							{foreach $variable in $aa.customVariables}
+								paq.push(['setCustomVariable', {index($variable) + 1}, '{$variable.name}', '{$variable.value}', '{$variable.scope}']);
+							{/foreach}
+						{/if}
+					{/foreach}
+
+					var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+					g.type = 'text/javascript'; g.async = true; g.defer = true; g.src = u + 'm.js'; s.parentNode.insertBefore(g, s);
+
+					return paq;
+				{rb})(window._paq || []);
+    		</script>
+		{/if}
+
 {/template}
 
 /**

@@ -105,11 +105,6 @@
 
 					{foreach $aa in $webAnalytics}
 						// Push the english url in lower case for consistent results
-						{if $aa.environment == 'staging'}
-							var u = "https://staging-www.priv.gc.ca/m/";
-						{else}
-							var u = "https://priv.gc.ca/m/";
-						{/if}
 						var url = removeTrailingSlash(window.location.href).toLowerCase();
 
 						paq.push(['setCustomDimension', 2, url]);
@@ -117,7 +112,7 @@
 						paq.push(['enableLinkTracking']);
 						paq.push(['trackPageView']);
 						paq.push(['trackVisibleContentImpressions']);
-						paq.push(['setTrackerUrl', u + 'm.php']);
+						paq.push(['setTrackerUrl', '/m/m.php']);
 						paq.push(['setSiteId',  '{$aa.siteId}']);
 
 						{if isNonnull($aa.customDimensions)} 
@@ -725,11 +720,6 @@
 
 					{foreach $aa in $webAnalytics}
 						// Push the english url in lower case for consistent results
-						{if $aa.environment == 'staging'}
-							var u = "https://staging-www.priv.gc.ca/m/";
-						{else}
-							var u = "https://priv.gc.ca/m/";
-						{/if}
 						var url = removeTrailingSlash(window.location.href).toLowerCase();
 
 						paq.push(['setCustomDimension', 2, url]);
@@ -737,7 +727,7 @@
 						paq.push(['enableLinkTracking']);
 						paq.push(['trackPageView']);
 						paq.push(['trackVisibleContentImpressions']);
-						paq.push(['setTrackerUrl', u + 'm.php']);
+						paq.push(['setTrackerUrl', '/m/m.php']);
 						paq.push(['setSiteId',  '{$aa.siteId}']);
 
 						{if isNonnull($aa.customDimensions)} 
