@@ -14,6 +14,8 @@
  * @param? menuLinks Loops of the menu sections - MSCA only
  * @param? breadcrumbs Used to set custom breadcrumbs.
  * @param? showPreContent Used to determine if the precontent space will be displayed.
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? cdnPath used to set working path to assets.
  */
 {template .appTop}
 		<ul id="wb-tphp">
@@ -237,6 +239,9 @@
  * @param? termsLink Used to override the Terms and conditions link in the footer.
  * @param? privacyLink Used to override the Privacy link in the footer.
  * @param? footerSections Used to populate the footer with custom links.
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? cdnPath used to set working path to assets.
+ * @param? localPath used to set working path to assets.
  */
 {template .appFooter}
 		<footer id="wb-info">
@@ -259,31 +264,31 @@
 				{if isNonnull($contactLink)}
 					{foreach $link in $contactLink}
 						{if isFirst($link)}
-							<li><a {if $link.href} href="{$link.href}"{else} href="{call wet.builder.urlhost data="all" /}fr/communiquer-avec-le-commissariat/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Coordonnées{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
+							<li><a {if $link.href} href="{$link.href}"{else} href="{call wet.builder.urlorigin data="all" /}fr/communiquer-avec-le-commissariat/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Coordonnées{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
 						{/if}
 					{/foreach}
 				{else}
-					<li><a href="{call wet.builder.urlhost data="all" /}fr/communiquer-avec-le-commissariat/">Coordonnées</a></li>
+					<li><a href="{call wet.builder.urlorigin data="all" /}fr/communiquer-avec-le-commissariat/">Coordonnées</a></li>
 				{/if}
 
 				{if isNonnull($termsLink)}
 					{foreach $link in $termsLink}
 						{if isFirst($link)}
-							<li><a {if $link.href} href="{$link.href}"{else} href="{call wet.builder.urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Avis{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
+							<li><a {if $link.href} href="{$link.href}"{else} href="{call wet.builder.urlorigin data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Avis{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
 						{/if}
 					{/foreach}
 				{else}
-					<li><a href="{call wet.builder.urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/">Avis</a></li>
+					<li><a href="{call wet.builder.urlorigin data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/">Avis</a></li>
 				{/if}
 
 				{if isNonnull($privacyLink)}
 					{foreach $link in $privacyLink}
 						{if isFirst($link)}
-							<li><a {if $link.href} href="{$link.href}"{else} href="{call wet.builder.urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/pp/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Confidentialité{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
+							<li><a {if $link.href} href="{$link.href}"{else} href="{call wet.builder.urlorigin data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/pp/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Confidentialité{if $link.newWindow==true}<span class="wb-inv"> Ce lien ouvrira dans une nouvelle fenêtre</span>{/if}</a></li>
 						{/if}
 					{/foreach}
 				{else}
-					<li><a href="{call wet.builder.urlhost data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/pp/">Confidentialité</a></li>
+					<li><a href="{call wet.builder.urlorigin data="all" /}fr/protection-de-la-vie-privee-et-transparence-au-commissariat/pp/">Confidentialité</a></li>
 				{/if}
 
 				</ul>

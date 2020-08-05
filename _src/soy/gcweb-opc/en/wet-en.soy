@@ -46,25 +46,22 @@
  * This is the set path to the root to where the assest (JS, CSS, Images, etc...) are.
  * From the page level and not the level of the compiled JS. NEEDS TO BE FIXED!
  * @param cdnEnv Used to switch between esdc envrionments and Akamai implementations.
- * @param cdnPath used to set working path to assets.
+ * @param? cdnPath used to set working path to assets.
 */
 {template .environment}
-{switch $cdnEnv}
-{case 'esdcqat','esdcprod','esdcnonprod'}/cdts/
-{case 'OPC_UMBRACO','dev'}/app/cls/WET/gcweb-opc/{THEME_VERSION}/
-{default}
-{if isNonnull($cdnPath)}{$cdnPath}
+{if $cdnEnv=='esdcqat' or $cdnEnv=='esdcprod' or $cdnEnv=='esdcnonprod'}/cdts/
+{elseif isNonnull($cdnPath)}{$cdnPath}
 {else}https://priv.gc.ca/app/cls/WET/gcweb-opc/{THEME_VERSION}/
 {/if}
-{/switch}
 {/template}
 
 /**
  * This is the host of the url
  * @param cdnEnv Used to switch between envrionments
+ * @param? localPath used to set working path to assets.
 */
-{template .urlhost}
-{if isNonnull($cdnEnv) and ($cdnEnv=='OPC_UMBRACO' or $cdnEnv=='dev')}/
+{template .urlorigin}
+{if isNonnull($cdnEnv) and ($cdnEnv!='prod') and isNonnull($localPath)}{$localPath}
 {else}https://priv.gc.ca/
 {/if}
 {/template}
@@ -73,6 +70,8 @@
  * This is all of the references to be made before existing page content.
  * @param? webAnalytics Used to determine inclusion of current analytics code.
  * @param? isApplication Used to determine if this will use the application templates (true/false).
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? cdnPath used to set working path to assets.
  */
 {template .refTop}
 		<!--[if gte IE 9 | !IE ]><!-->
@@ -86,7 +85,7 @@
 		<!--[if lt IE 9]>
 		<link href='{call .environment data="all" /}gcweb-opc/assets/favicon.ico' rel="shortcut icon" />
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/ie8-theme.min.css' />
-		<script src='{call .environment data="all" /}wet-boew/js/jquery/1.11.1/jquery.min.js'></script>
+		<script src='{call .environment data="all" /}wet-boew/js/jquery/2.2.4/jquery.min.js'></script>
 		<script src='{call .environment data="all" /}wet-boew/js/ie8-wet-boew.min.js'></script>
 		<![endif]-->
 		<!--[if lte IE 9]>
@@ -105,6 +104,12 @@
 
 					{foreach $aa in $webAnalytics}
 						// Push the english url in lower case for consistent results
+						{if $aa.environment == 'staging'}	
+							var u = "https://staging-www.priv.gc.ca/m/";	
+						{else}	
+							var u = "https://priv.gc.ca/m/";	
+						{/if}
+						
 						var url = removeTrailingSlash(window.location.href).toLowerCase();
 
 						paq.push(['setCustomDimension', 2, url]);
@@ -112,7 +117,7 @@
 						paq.push(['enableLinkTracking']);
 						paq.push(['trackPageView']);
 						paq.push(['trackVisibleContentImpressions']);
-						paq.push(['setTrackerUrl', '/m/m.php']);
+						paq.push(['setTrackerUrl', u + '/m.php']);
 						paq.push(['setSiteId',  '{$aa.siteId}']);
 
 						{if isNonnull($aa.customDimensions)} 
@@ -145,6 +150,9 @@
  * @param? showPreContent Used to determine if the precontent space will be displayed.
  * @param? breadcrumbs Used to set custom breadcrumbs.
  * @param? topSecMenu Set to true if you want to use the secondary navigation.
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? cdnPath used to set working path to assets.
+ * @param? localPath used to set working path to assets.
  */
 {template .top}
 		<section aria-label="Skip to">
@@ -181,7 +189,7 @@
 
 				<div class="row">
 					<div class="brand col-xs-8 col-sm-9 col-md-5">
-						{if $siteMenu != false}<a href="{call .urlhost data="all" /}en/" property="url">{/if}
+						{if $siteMenu != false}<a href="{call .urlorigin data="all" /}en/" property="url">{/if}
 							<img class="visible-print-block" src='{call .environment data="all" /}gcweb-opc/assets/opc-blk-en.png' alt="">
 							<img src='{call .environment data="all" /}gcweb-opc/assets/opc-wht-en.png' class="hidden-print img img-responsive" alt="OPC Logo"/>
 							<span class="wb-inv"> Office of the Privacy Commissioner of Canada</span>
@@ -207,7 +215,7 @@
 					{if $search != false}
 					<section id="wb-srch" class="col-xs-7 text-right visible-md visible-lg" aria-labelledby="search-section">
 						<h2 id="search-section">Search</h2>
-						<form action="{call .urlhost data="all" /}en/search" class="form-inline" enctype="multipart/form-data" method="post" name="cse-search-box" role="search">
+						<form action="{call .urlorigin data="all" /}en/search" class="form-inline" enctype="multipart/form-data" method="post" name="cse-search-box" role="search">
 							<div class="form-group">
 								<label for="wb-srch-q" class="wb-inv">Search website</label>
 								<input id="wb-srch-q" list="wb-srch-q-ac" class="wb-srch-q form-control" name="t" type="search" value="" size="27" maxlength="150" placeholder="Search priv.gc.ca" />
@@ -226,17 +234,17 @@
 			</div>
 
 			{if $siteMenu != false}
-			<nav id="wb-sm" data-ajax-replace="{call .urlhost data="all" /}ajax/sitemenu-en" data-trgt="mb-pnl" class="wb-menu visible-md visible-lg" typeof="SiteNavigationElement" aria-labelledby="topics-menu-section">
+			<nav id="wb-sm" data-ajax-replace="{call .urlorigin data="all" /}ajax/sitemenu-en" data-trgt="mb-pnl" class="wb-menu visible-md visible-lg" typeof="SiteNavigationElement" aria-labelledby="topics-menu-section">
 				<div class="container nvbar">
 					<h2 id="topics-menu-section">Topics menu</h2>
 					<div class="row">
 						<ul class="list-inline menu">
-							<li><a href="{call .urlhost data="all" /}en/for-individuals/" class="item">For individuals</a></li>
-							<li><a href="{call .urlhost data="all" /}en/for-businesses/" class="item">For businesses</a></li>
-							<li><a href="{call .urlhost data="all" /}en/for-federal-institutions/" class="item">For federal institutions</a></li>
-							<li><a href="{call .urlhost data="all" /}en/report-a-concern/" class="item">Report a concern</a></li>
-							<li><a href="{call .urlhost data="all" /}en/opc-actions-and-decisions/" class="item">OPC actions and decisions</a></li>
-							<li><a href="{call .urlhost data="all" /}en/about-the-opc/" class="item">About the OPC</a></li>
+							<li><a href="{call .urlorigin data="all" /}en/for-individuals/" class="item">For individuals</a></li>
+							<li><a href="{call .urlorigin data="all" /}en/for-businesses/" class="item">For businesses</a></li>
+							<li><a href="{call .urlorigin data="all" /}en/for-federal-institutions/" class="item">For federal institutions</a></li>
+							<li><a href="{call .urlorigin data="all" /}en/report-a-concern/" class="item">Report a concern</a></li>
+							<li><a href="{call .urlorigin data="all" /}en/opc-actions-and-decisions/" class="item">OPC actions and decisions</a></li>
+							<li><a href="{call .urlorigin data="all" /}en/about-the-opc/" class="item">About the OPC</a></li>
 						</ul>
 					</div>
 				</div>
@@ -275,6 +283,8 @@
  * @param? screenIdentifier Used to identify screens for users that need help
  * @param? pagedetails Used to determine if the pagedetails div will be displayed
  * @param? isContainer Used to add the container class to the pageDetails section when using the homepage look
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? localPath used to set working path to assets.
  */
 {template .preFooter}
 		{if $showPostContent != false}
@@ -300,7 +310,7 @@
 													<span class="prefix">Error&nbsp;1:&nbsp;</span>No selection was made. You must choose at least 1 answer.
 												</span>
 											</strong>
-											<form action="{call .urlhost data="all" /}en/for-individuals/" enctype="multipart/form-data" id="reportAProblemForm" method="post">
+											<form action="{call .urlorigin data="all" /}en/for-individuals/" enctype="multipart/form-data" id="reportAProblemForm" method="post">
 												<input id="ProblemContentId" name="ProblemContentId" type="hidden" value="" />
 												<input name="__RequestVerificationToken" type="hidden" value="" />
 												<fieldset id="reportAProblemInputs">
@@ -338,7 +348,7 @@
 														<ul>
 															<li>
 																<small>
-																	<strong>You will not receive a reply.</strong> For enquiries, please <a href="{call .urlhost data="all" /}en/contact-the-opc/">contact the Office of the Privacy Commissioner</a>.
+																	<strong>You will not receive a reply.</strong> For enquiries, please <a href="{call .urlorigin data="all" /}en/contact-the-opc/">contact the Office of the Privacy Commissioner</a>.
 																</small>
 															</li>
 															<li>
@@ -348,7 +358,7 @@
 															</li>
 															<li>
 																<small>
-																	<strong>For more information about this tool</strong>, please refer to our <a href="{call .urlhost data="all" /}en/privacy-and-transparency-at-the-opc/terms-and-conditions-of-use/">terms and conditions of use</a>.
+																	<strong>For more information about this tool</strong>, please refer to our <a href="{call .urlorigin data="all" /}en/privacy-and-transparency-at-the-opc/terms-and-conditions-of-use/">terms and conditions of use</a>.
 																</small>
 															</li>
 														</ul>
@@ -428,6 +438,9 @@
  * @param? termsLink Used to override the Terms and conditions link in the footer.
  * @param? privacyLink Used to override the Privacy link in the footer.
  * @param? showFooter Used to determine if the page footer will be displayed.
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? cdnPath used to set working path to assets.
+ * @param? localPath used to set working path to assets.
  */
 {template .footer}
 		<footer id="wb-info">
@@ -440,11 +453,11 @@
 							<h3 id="about-opc-section">About the OPC</h3>
 							<p>The Privacy Commissioner of Canada is an Agent of Parliament whose mission is to protect and promote privacy rights.</p>
 							<ul class="list-unstyled">
-								<li><a href="{call .urlhost data="all" /}en/about-the-opc/who-we-are/">Who we are</a></li>
-								<li><a href="{call .urlhost data="all" /}en/about-the-opc/what-we-do/">What we do</a></li>
-								<li><a href="{call .urlhost data="all" /}en/about-the-opc/opc-operational-reports/">OPC operational reports</a></li>
-								<li><a href="{call .urlhost data="all" /}en/about-the-opc/publications/">Publications</a></li>
-								<li><a href="{call .urlhost data="all" /}en/about-the-opc/working-at-the-opc/">Working at the OPC</a></li>
+								<li><a href="{call .urlorigin data="all" /}en/about-the-opc/who-we-are/">Who we are</a></li>
+								<li><a href="{call .urlorigin data="all" /}en/about-the-opc/what-we-do/">What we do</a></li>
+								<li><a href="{call .urlorigin data="all" /}en/about-the-opc/opc-operational-reports/">OPC operational reports</a></li>
+								<li><a href="{call .urlorigin data="all" /}en/about-the-opc/publications/">Publications</a></li>
+								<li><a href="{call .urlorigin data="all" /}en/about-the-opc/working-at-the-opc/">Working at the OPC</a></li>
 							</ul>
 						</section>
 					</div>
@@ -453,9 +466,9 @@
 							<h3 id="opc-news-section">OPC news</h3>
 							<p>Get updates about the OPC’s announcements and activities, as well as the events in which we participate.</p>
 							<ul class="list-unstyled">
-								<li><a href="{call .urlhost data="all" /}en/opc-news/news-and-announcements/">News and announcements</a></li>
-								<li><a href="{call .urlhost data="all" /}en/opc-news/privacy-events/">Privacy events</a></li>
-								<li><a href="{call .urlhost data="all" /}en/opc-news/speeches/">Speeches</a></li>
+								<li><a href="{call .urlorigin data="all" /}en/opc-news/news-and-announcements/">News and announcements</a></li>
+								<li><a href="{call .urlorigin data="all" /}en/opc-news/privacy-events/">Privacy events</a></li>
+								<li><a href="{call .urlorigin data="all" /}en/opc-news/speeches/">Speeches</a></li>
 							</ul>
 						</section>
 					</div>
@@ -463,12 +476,12 @@
 						<section aria-labelledby="respect-section">
 							<h3 id="respect-section">Your privacy</h3>
 							<p><strong>We respect your privacy</strong></p>
-							<p>Read our <a href="{call .urlhost data="all" /}en/privacy-and-transparency-at-the-opc/pp/">Privacy policy</a> and <a href="{call .urlhost data="all" /}en/privacy-and-transparency-at-the-opc/terms-and-conditions-of-use/">Terms and conditions of use</a> to find out more about your privacy and rights when using the <a href="{call .urlhost data="all" /}">priv.gc.ca</a> website or contacting the Office of the Privacy Commissioner of Canada.</p>
+							<p>Read our <a href="{call .urlorigin data="all" /}en/privacy-and-transparency-at-the-opc/pp/">Privacy policy</a> and <a href="{call .urlorigin data="all" /}en/privacy-and-transparency-at-the-opc/terms-and-conditions-of-use/">Terms and conditions of use</a> to find out more about your privacy and rights when using the <a href="{call .urlorigin data="all" /}">priv.gc.ca</a> website or contacting the Office of the Privacy Commissioner of Canada.</p>
 						</section>
 						<section aria-labelledby="transparency-section">
 							<h3 id="transparency-section">Transparency</h3>
 							<ul class="list-unstyled">
-								<li><a href="{call .urlhost data="all" /}en/privacy-and-transparency-at-the-opc/proactive-disclosure/">Proactive disclosure</a></li>
+								<li><a href="{call .urlorigin data="all" /}en/privacy-and-transparency-at-the-opc/proactive-disclosure/">Proactive disclosure</a></li>
 							</ul>
 						</section>
 					</div>
@@ -487,15 +500,15 @@
 									{/foreach}
 								</ul>
 							{else}
-								<a href="{call .urlhost data="all" /}en/contact-the-opc/" role="button" class="btn btn-default active">Contact the OPC</a>
+								<a href="{call .urlorigin data="all" /}en/contact-the-opc/" role="button" class="btn btn-default active">Contact the OPC</a>
 							{/if}
 						</section>
 						<section aria-labelledby="stay-connected-section">
 							<h3 id="stay-connected-section">Stay connected</h3>
 							<ul class="list-unstyled">
-								<li><span class="fa fa-comments"></span> <a href="{call .urlhost data="all" /}en/blog">OPC Blog</a></li>
+								<li><span class="fa fa-comments"></span> <a href="{call .urlorigin data="all" /}en/blog">OPC Blog</a></li>
 								<li><span class="fa fa-linkedin-square"></span> <a href="https://www.linkedin.com/company/office-of-the-privacy-commissioner-of-canada">OPC LinkedIn</a></li>
-								<li><span class="fa fa-rss-square"></span> <a href="{call .urlhost data="all" /}en/rss-feeds/">OPC RSS feeds</a></li>
+								<li><span class="fa fa-rss-square"></span> <a href="{call .urlorigin data="all" /}en/rss-feeds/">OPC RSS feeds</a></li>
 								<li><span class="fa fa-twitter"></span> <a href="https://twitter.com/PrivacyPrivee">OPC Twitter</a></li>
 								<li><span class="fa fa-youtube"></span> <a href="https://www.youtube.com/user/PrivacyComm">OPC YouTube channel</a></li>
 							</ul>
@@ -511,31 +524,31 @@
 				{if isNonnull($contactLinks)}
 					{foreach $link in $contactLinks}
 						{if isFirst($link)}
-							<li><a {if $link.href} href="{$link.href}"{else} href="{call .urlhost data="all" /}en/contact-the-opc/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Contact information{if $link.newWindow==true}<span class="wb-inv"> This link will open in a new window</span>{/if}</a></li>
+							<li><a {if $link.href} href="{$link.href}"{else} href="{call .urlorigin data="all" /}en/contact-the-opc/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Contact information{if $link.newWindow==true}<span class="wb-inv"> This link will open in a new window</span>{/if}</a></li>
 						{/if}
 					{/foreach}
 				{else}
-					<li><a href="{call .urlhost data="all" /}en/contact-the-opc/">Contact information</a></li>
+					<li><a href="{call .urlorigin data="all" /}en/contact-the-opc/">Contact information</a></li>
 				{/if}
 
 				{if isNonnull($termsLink)}
 					{foreach $link in $termsLink}
 						{if isFirst($link)}
-							<li><a {if $link.href} href="{$link.href}"{else} href="{call .urlhost data="all" /}en/privacy-and-transparency-at-the-opc/terms-and-conditions-of-use/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Terms and conditions{if $link.newWindow==true}<span class="wb-inv"> This link will open in a new window</span>{/if}</a></li>
+							<li><a {if $link.href} href="{$link.href}"{else} href="{call .urlorigin data="all" /}en/privacy-and-transparency-at-the-opc/terms-and-conditions-of-use/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Terms and conditions{if $link.newWindow==true}<span class="wb-inv"> This link will open in a new window</span>{/if}</a></li>
 						{/if}
 					{/foreach}
 				{else}
-					<li><a href="{call .urlhost data="all" /}en/privacy-and-transparency-at-the-opc/terms-and-conditions-of-use/">Terms and conditions</a></li>
+					<li><a href="{call .urlorigin data="all" /}en/privacy-and-transparency-at-the-opc/terms-and-conditions-of-use/">Terms and conditions</a></li>
 				{/if}
 
 				{if isNonnull($privacyLink)}
 					{foreach $link in $privacyLink}
 						{if isFirst($link)}
-							<li><a {if $link.href} href="{$link.href}"{else} href="{call .urlhost data="all" /}en/privacy-and-transparency-at-the-opc/pp/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Privacy{if $link.newWindow==true}<span class="wb-inv"> This link will open in a new window</span>{/if}</a></li>
+							<li><a {if $link.href} href="{$link.href}"{else} href="{call .urlorigin data="all" /}en/privacy-and-transparency-at-the-opc/pp/"{/if}{if $link.newWindow} target="_blank"  rel="noopener"{/if}>Privacy{if $link.newWindow==true}<span class="wb-inv"> This link will open in a new window</span>{/if}</a></li>
 						{/if}
 					{/foreach}
 				{else}
-					<li><a href="{call .urlhost data="all" /}en/privacy-and-transparency-at-the-opc/pp/">Privacy</a></li>
+					<li><a href="{call .urlorigin data="all" /}en/privacy-and-transparency-at-the-opc/pp/">Privacy</a></li>
 				{/if}
 				</ul>
 			</nav>
@@ -569,10 +582,12 @@
  * @param? jqueryEnv Used to determine location of jQuery files (local / external).
  * @param? webAnalytics Used to determine inclusion of current analytics code.
  * @param? isApplication Used to determine if this will use the application templates (true/false).
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? cdnPath used to set working path to assets.
  */
 {template .refFooter}
 		<!--[if gte IE 9 | !IE ]><!-->
-		<script src='{if $jqueryEnv=='external'}https://ajax.googleapis.com/ajax/libs/{else}{call .environment data="all" /}wet-boew/js/{/if}jquery/2.1.4/jquery.min.js'></script>
+		<script src='{if $jqueryEnv=='external'}https://ajax.googleapis.com/ajax/libs/{else}{call .environment data="all" /}wet-boew/js/{/if}jquery/2.2.4/jquery.min.js'></script>
 		<script src='{call .environment data="all" /}wet-boew/js/wet-boew.min.js'></script>
 		<!--<![endif]-->
 		<!--[if lt IE 9]>
@@ -623,6 +638,8 @@
 
 /**
  * This is all of the references to be made before existing page content.
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? cdnPath used to set working path to assets.
  */
 {template .splashTop}
 		<!--[if gte IE 9 | !IE ]><!-->
@@ -634,7 +651,7 @@
 		<link href='{call .environment data="all" /}gcweb-opc/assets/favicon.ico' rel="shortcut icon" />
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/messages-ie.min.css' />
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/ie8-theme.min.css' />
-		<script src='{call .environment data="all" /}wet-boew/js/jquery/1.11.4/jquery.min.js'></script>
+		<script src='{call .environment data="all" /}wet-boew/js/jquery/2.2.4/jquery.min.js'></script>
 		<script src='{call .environment data="all" /}wet-boew/js/ie8-wet-boew.min.js'></script>
 		<![endif]-->
 		<!--[if lte IE 9]><![endif]-->
@@ -650,6 +667,9 @@
  * @param termsFra The French Terms and conditions of use.
  * @param? jqueryEnv Used to determine location of jQuery files (local / external).
  * @param? webAnalytics Used to determine inclusion of current analytics code.
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? cdnPath used to set working path to assets.
+ * @param? localPath used to set working path to assets.
  */
 {template .splash}
 		<div id="bg">
@@ -660,7 +680,7 @@
 					<h1 property="name" class="wb-inv">Office of the Privacy Commissioner</h1>
 					<div class="row">
 						<div class="col-md-12">
-							<img src='{call .environment data="all" /}gcweb-opc/assets/opc-blk-fr.png' class="img img-responsive" alt="Commissariat à la protection de la vie privée du Canada / Office of the Privacy Commissioner" />
+							<img src='{call .environment data="all" /}gcweb-opc/assets/opc-blk-en.png' class="img img-responsive" alt="Commissariat à la protection de la vie privée du Canada / Office of the Privacy Commissioner" />
 						</div>
 					</div>
 					<div class="row">
@@ -670,10 +690,10 @@
 							{else}
 								<h2 class="wb-inv">Commissariat à la protection de la vie privée du Canada</h2>
 							{/if}
-							{if isNonnull($nameFra)}
+							{if isNonnull($indexFra)}
 								<p><a href="{$indexFra}" class="btn btn-primary" lang="fr">Français</a></p>
 							{else}
-								<p><a href="{call .urlhost data="all" /}fr/" class="btn btn-primary" lang="fr">Français</a></p>
+								<p><a href="{call .urlorigin data="all" /}fr/" class="btn btn-primary" lang="fr">Français</a></p>
 							{/if}
 						</section>
 						<section class="col-xs-6" lang="en">
@@ -682,10 +702,10 @@
 							{else}
 								<h2 class="wb-inv">Office of the Privacy Commissioner</h2>
 							{/if}
-							{if isNonnull($nameEng)}
+							{if isNonnull($indexEng)}
 								<p><a href="{$indexEng}" class="btn btn-primary" lang="en">English</a></p>
 							{else}
-								<p><a href="{call .urlhost data="all" /}en/" class="btn btn-primary" lang="en">English</a></p>
+								<p><a href="{call .urlorigin data="all" /}en/" class="btn btn-primary" lang="en">English</a></p>
 							{/if}
 						</section>
 					</div>
@@ -701,7 +721,7 @@
 			</div>
 		</main>
 		<!--[if gte IE 9 | !IE ]><!-->
-		<script src="{if $jqueryEnv=='external'}https://ajax.googleapis.com/ajax/libs{else}{call .environment data="all" /}wet-boew/js/{/if}jquery/2.1.4/jquery.min.js"></script>
+		<script src="{if $jqueryEnv=='external'}https://ajax.googleapis.com/ajax/libs{else}{call .environment data="all" /}wet-boew/js/{/if}jquery/2.2.4/jquery.min.js"></script>
 		<script src='{call .environment data="all" /}wet-boew/js/wet-boew.min.js'></script>
 		<!--<![endif]-->
 		<!--[if lt IE 9]>
@@ -720,6 +740,11 @@
 
 					{foreach $aa in $webAnalytics}
 						// Push the english url in lower case for consistent results
+						{if $aa.environment == 'staging'}	
+							var u = "https://staging-www.priv.gc.ca/m/";	
+						{else}	
+							var u = "https://priv.gc.ca/m/";	
+						{/if}
 						var url = removeTrailingSlash(window.location.href).toLowerCase();
 
 						paq.push(['setCustomDimension', 2, url]);
@@ -727,7 +752,7 @@
 						paq.push(['enableLinkTracking']);
 						paq.push(['trackPageView']);
 						paq.push(['trackVisibleContentImpressions']);
-						paq.push(['setTrackerUrl', '/m/m.php']);
+						paq.push(['setTrackerUrl', u + '/m.php']);
 						paq.push(['setSiteId',  '{$aa.siteId}']);
 
 						{if isNonnull($aa.customDimensions)} 

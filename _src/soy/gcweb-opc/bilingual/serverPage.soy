@@ -3,6 +3,8 @@
 /**
  * This is all of the references to be made in the head element.
  * @param? webAnalytics Used to determine inclusion of current analytics code.
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? cdnPath used to set working path to assets.
  */
 {template .serverRefTop}
 		<!--[if gte IE 9 | !IE ]><!-->
@@ -12,7 +14,7 @@
 		<!--[if lt IE 9]>
 		<link href='{call wet.builder.environment data="all" /}gcweb-opc/assets/favicon.ico' rel="shortcut icon" />
 		<link rel="stylesheet" href='{call wet.builder.environment data="all" /}gcweb-opc/css/ie8-theme-srv.min.css' />
-		<script src='{call wet.builder.environment data="all" /}wet-boew/js/jquery/1.11.1/jquery.min.js'></script>
+		<script src='{call wet.builder.environment data="all" /}wet-boew/js/jquery/2.2.4/jquery.min.js'></script>
 		<script src='{call wet.builder.environment data="all" /}wet-boew/js/ie8-wet-boew.min.js'></script>
 		<![endif]-->
 
@@ -27,6 +29,12 @@
 
 					{foreach $aa in $webAnalytics}
 						// Push the english url in lower case for consistent results
+						{if $aa.environment == 'staging'}	
+							var u = "https://staging-www.priv.gc.ca/m/";	
+						{else}	
+							var u = "https://priv.gc.ca/m/";	
+						{/if}
+						
 						var url = removeTrailingSlash(window.location.href).toLowerCase();
 
 						paq.push(['setCustomDimension', 2, url]);
@@ -34,7 +42,7 @@
 						paq.push(['enableLinkTracking']);
 						paq.push(['trackPageView']);
 						paq.push(['trackVisibleContentImpressions']);
-						paq.push(['setTrackerUrl', '/m/m.php']);
+						paq.push(['setTrackerUrl', u + '/m.php']);
 						paq.push(['setSiteId',  '{$aa.siteId}']);
 
 						{if isNonnull($aa.customDimensions)} 
@@ -62,6 +70,8 @@
 
 /**
  * This is all of the references to be made before existing page content.
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? cdnPath used to set working path to assets.
  */
 {template .serverTop}
 	<header role="banner" id="wb-bnr" class="container">
@@ -76,6 +86,8 @@
 
 /**
  * This is all of the references to be made before existing page content.
+ * @param? cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+ * @param? cdnPath used to set working path to assets.
  */
 {template .serverBottom}
 	<footer id="wb-info">
