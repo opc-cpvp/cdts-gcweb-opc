@@ -51,7 +51,18 @@
 {template .environment}
 {if $cdnEnv=='esdcqat' or $cdnEnv=='esdcprod' or $cdnEnv=='esdcnonprod'}/cdts/
 {elseif isNonnull($cdnPath)}{$cdnPath}
-{else}https://priv.gc.ca/app/cls/WET/gcweb-opc/{THEME_VERSION}/
+{else}{call .baseUrl data="all" /}app/cls/WET/gcweb-opc/{THEME_VERSION}/
+{/if}
+{/template}
+
+/**
+ * This is the set path to the base url to where the assest (JS, CSS, Images, etc...) are.
+ * From the page level and not the level of the compiled JS. NEEDS TO BE FIXED!
+ * @param cdnEnv Used to switch between esdc envrionments and Akamai implementations.
+*/
+{template .baseUrl}
+{if $cdnEnv=='staging'}https://staging-www.priv.gc.ca/
+{else}https://staging-www.priv.gc.ca/
 {/if}
 {/template}
 
@@ -78,7 +89,7 @@
 		<!--[if lte IE 9]>
 		<![endif]-->
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/opc-style.css' />
-		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/cms-css/feedback.css' />
+		<link rel="stylesheet" href='{call .baseUrl data="all" /}scripts/components/feedback.css' />
 		{if isNonnull($webAnalytics)}
 			<script type="text/javascript">
 				var _paq = (function (paq) {lb}
@@ -105,13 +116,13 @@
 						paq.push(['setTrackerUrl', u + 'm.php']);
 						paq.push(['setSiteId',  '{$aa.siteId}']);
 
-						{if isNonnull($aa.customDimensions)} 
+						{if isNonnull($aa.customDimensions)}
 							{foreach $dimension in $aa.customDimensions}
 								paq.push(['setCustomDimension', {$dimension.id}, '{$dimension.value}']);
 							{/foreach}
 						{/if}
 
-						{if isNonnull($aa.customVariables)} 
+						{if isNonnull($aa.customVariables)}
 							{foreach $variable in $aa.customVariables}
 								paq.push(['setCustomVariable', {index($variable) + 1}, '{$variable.name}', '{$variable.value}', '{$variable.scope}']);
 							{/foreach}
@@ -282,81 +293,8 @@
 							<a href="{$showFeedback}" class="btn btn-default btn-center">Signaler un problème sur cette page</a>
 						</div>
 					{else}
-						<div class="col-sm-6 col-md-5 col-lg-5" id="reportAProblem">
-							<details class="brdr-0" aria-labelledby="problemSection">
-								<summary class="btn btn-default" id="problemSection">Signaler un problème sur cette page</summary>
-								<div class="well row">
-									<div>
-										<div id="wb-auto-3">
-											<strong class="error" id="validationSummary2" role="alert" aria-atomic="true">
-												<span class="label label-danger">
-													<span class="prefix">Erreur&nbsp;1:&nbsp;</span>Aucune sélection n’a été faite. Vous devez choisir au moins une réponse.
-												</span>
-											</strong>
-											<form action="https://priv.gc.ca/fr/pour-les-individus/" enctype="multipart/form-data" id="reportAProblemForm" method="post">
-												<input id="ProblemContentId" name="ProblemContentId" type="hidden" value="" />
-												<input name="__RequestVerificationToken" type="hidden" value="" />
-												<fieldset id="reportAProblemInputs">
-													<legend class="required"><span class="field-name">Veuillez cocher toutes les réponses pertinentes </span><span class="redspan"><strong>(obligatoire)</strong> </span>:</legend>
-													<div class="checkbox">
-														<label for="PageHasBrokenLink">
-															<input id="PageHasBrokenLink" name="PageHasBrokenLink" type="checkbox" value="true" />
-															<input name="PageHasBrokenLink" type="hidden" value="false" /> Il y a des hyperliens brisés.
-														</label>
-													</div>
-													<div class="checkbox">
-														<label for="PageHasSpellingOrGrammarMistakes">
-															<input id="PageHasSpellingOrGrammarMistakes" name="PageHasSpellingOrGrammarMistakes" type="checkbox" value="true" />
-															<input name="PageHasSpellingOrGrammarMistakes" type="hidden" value="false" /> Il y a des erreurs d’orthographe ou de grammaire.
-														</label>
-													</div>
-													<div class="checkbox">
-														<label for="InfoIsOutdated2">
-															<input id="InfoIsOutdated2" name="InfoIsOutdated2" type="checkbox" value="true" />
-															<input name="InfoIsOutdated2" type="hidden" value="false" /> L’information est erronée ou n’est plus à jour.
-														</label>
-													</div>
-													<div class="checkbox">
-														<label for="OtherReason3"><input id="OtherReason3" name="OtherReason3" type="checkbox" value="true" />
-														<input name="OtherReason3" type="hidden" value="false" /> Autre</label>
-														<div class="form-group" id="otherReasonComments3">
-															<label for="Comments3">Veuillez préciser (maximum de 750 caractères) :</label>
-															<textarea name="Comments" class="form-control" id="Comments3" maxlength="750" rows="2" cols="20"></textarea>
-														</div>
-													</div>
-												</fieldset>
-												<div id="noteAndSubmit2">
-													<div class="alert alert-info">
-														<h2 class="h5">Note</h2>
-														<ul>
-															<li>
-																<small>
-																	<strong>Vous ne recevrez pas de réponse.</strong> Pour toute question, veuillez <a href="https://priv.gc.ca/fr/communiquer-avec-le-commissariat/">communiquer avec le Commissariat à la protection de la vie privée</a>.
-																</small>
-															</li>
-															<li>
-																<small>
-																	<strong>N’inscrivez aucun renseignement personnel,</strong> comme votre nom, numéro d'assurance sociale (NAS), votre adresse au domicile ou au travail, ou encore les numéros de cas ou de dossiers.
-																</small>
-															</li>
-															<li>
-																<small>
-																	<strong>Pour plus d’information au sujet de cette fonctionnalité</strong>, veuillez consulter nos <a href="https://priv.gc.ca/fr/protection-de-la-vie-privee-et-transparence-au-commissariat/conditions-d-utilisation/">conditions d’utilisation</a>.
-																</small>
-															</li>
-														</ul>
-													</div>
-													<div>
-														<input type="submit" class="btn btn-primary" value="Soumettre" aria-controls="wb-auto-3" id="btnSubmitProblem" />
-													</div>
-												</div>
-												<input name='ufprt' type='hidden' value='' />
-											</form>
-										</div>
-										<div id="reportAProblemSubmissionResults"></div>
-									</div>
-								</div>
-							</details>
+						<div class="col-sm-6 col-md-5 col-lg-5">
+							<feedback-element locale="fr" feedback-type="problem"></feedback-element>
 						</div>
 					{/if}
 				{/if}
@@ -571,7 +509,7 @@
 		<script src='{call .environment data="all" /}wet-boew/js/ie8-wet-boew2.min.js'></script>
 		<![endif]-->
 		<script src='{call .environment data="all" /}gcweb-opc/js/theme.min.js'></script>
-		<script src='{call .environment data="all" /}gcweb-opc/cms-scripts/feedback.js'></script>
+		<script src='{call .baseUrl data="all" /}scripts/components/feedback.js'></script>
 		{if $exitScript == true}
 		<script src='{call .environment data="all" /}cdts/js/exitScript.js'></script>
 		<script data-id="exitScript" data-token="{$exitURL}" data-token-domains="{$exitDomains}" data-token-modal="{$displayModal}">clickA();</script>
