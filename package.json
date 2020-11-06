@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/opc-cpvp/cdts-gcweb-opc#README",
   "dependencies": {
+    "feedbackform.client": "github:opc-cpvp/feedbackform.client#features/npm-prepare",
     "gcweb-opc": "github:opc-cpvp/themes-cdn#v4.0.26-gcweb-opc"
   },
   "devDependencies": {

@@ -51,18 +51,7 @@
 {template .environment}
 {if $cdnEnv=='esdcqat' or $cdnEnv=='esdcprod' or $cdnEnv=='esdcnonprod'}/cdts/
 {elseif isNonnull($cdnPath)}{$cdnPath}
-{else}{call .baseUrl data="all" /}app/cls/WET/gcweb-opc/{THEME_VERSION}/
-{/if}
-{/template}
-
-/**
- * This is the set path to the base url to where the assest (JS, CSS, Images, etc...) are.
- * From the page level and not the level of the compiled JS. NEEDS TO BE FIXED!
- * @param cdnEnv Used to switch between esdc envrionments and Akamai implementations.
-*/
-{template .baseUrl}
-{if $cdnEnv=='staging'}https://staging-www.priv.gc.ca/
-{else}https://staging-www.priv.gc.ca/
+{else}https://priv.gc.ca/app/cls/WET/gcweb-opc/{THEME_VERSION}/
 {/if}
 {/template}
 
@@ -89,7 +78,7 @@
 		<!--[if lte IE 9]>
 		<![endif]-->
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/opc-style.css' />
-		<link rel="stylesheet" href='{call .baseUrl data="all" /}scripts/components/feedback.css' />
+		<link rel="stylesheet" href='{call .environment data="all" /}components/feedback.css' />
 		{if isNonnull($webAnalytics)}
 			<script type="text/javascript">
 				var _paq = (function (paq) {lb}
@@ -285,25 +274,17 @@
 		{/if}
 		{if $pagedetails != false}
 		<div class="pagedetails{if isNonnull($isContainer)} container{/if}">
-			{if $showFeedback != false or $showShare != false}
+			{if isNonnull($showFeedback) or isNonnull($showShare)}
 			<div class="row mrgn-tp-sm">
 				{if $showFeedback != false}
-					{if isNonnull($showFeedback) and $showFeedback != true }
-						<div class="col-sm-6 col-md-5 col-lg-5">
-							<a href="{$showFeedback}" class="btn btn-default btn-center">Signaler un problème sur cette page</a>
-						</div>
-					{else}
-						<div class="col-sm-6 col-md-5 col-lg-5">
-							<feedback-element locale="fr" feedback-type="problem"></feedback-element>
-						</div>
-					{/if}
+					<div class="col-sm-6 col-md-5 col-lg-5">
+						<feedback-element locale="fr" feedback-type="problem"></feedback-element>
+					</div>
 				{/if}
 				{if $showShare != false}
-					{if isNonnull($showShare)}
-						<div class="wb-share col-sm-4 col-md-3 col-sm-offset-{if $showFeedback != false}2{else}8{/if} col-md-offset-{if $showFeedback != false}4{else}9{/if}{if $showFeedback != false} col-lg-offset-4{/if}" data-wb-share='{lb}"filter": [{foreach $item in $showShare}"{$item}"{if not isLast($item)}, {/if}{/foreach}], "lnkClass": "btn btn-default btn-block"{rb}'></div>
-					{else}
-						<div class="wb-share col-sm-4 col-md-3 col-sm-offset-{if $showFeedback != false}2{else}8{/if} col-md-offset-{if $showFeedback != false}4{else}9{/if}{if $showFeedback != false} col-lg-offset-4{/if}" data-wb-share='{lb}"lnkClass": "btn btn-default btn-block"{rb}'></div>
-					{/if}
+					<div class="col-sm-6 col-md-4 col-lg-5 col-md-offset-{if $showFeedback != false}3{else}8{/if} col-lg-offset-{if $showFeedback != false}2{else}7{/if}">
+						<feedback-element locale="fr" feedback-type="helpful"></feedback-element>
+					</div>
 				{/if}
 			</div>
 			{/if}
@@ -509,7 +490,7 @@
 		<script src='{call .environment data="all" /}wet-boew/js/ie8-wet-boew2.min.js'></script>
 		<![endif]-->
 		<script src='{call .environment data="all" /}gcweb-opc/js/theme.min.js'></script>
-		<script src='{call .baseUrl data="all" /}scripts/components/feedback.js'></script>
+		<script src='{call .environment data="all" /}components/feedback.js'></script>
 		{if $exitScript == true}
 		<script src='{call .environment data="all" /}cdts/js/exitScript.js'></script>
 		<script data-id="exitScript" data-token="{$exitURL}" data-token-domains="{$exitDomains}" data-token-modal="{$displayModal}">clickA();</script>
