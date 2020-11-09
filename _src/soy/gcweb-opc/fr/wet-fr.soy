@@ -287,8 +287,8 @@
 				{/if}
 				{if isNonnull($showShare) and $showShare != false}
 					<div class="col-sm-6 col-md-4 col-lg-5 col-md-offset-{if isNonnull($showFeedback) and $showFeedback != false}3{else}8{/if} col-lg-offset-{if isNonnull($showFeedback) and $showFeedback != false}2{else}7{/if}">
-					{if $showShare != true}
-						<feedback-element locale="fr" feedback-type="helpful" feedback-api="{foreach $item in $showShare}{if isLast($item)}{$item}{/if}{/foreach}"></feedback-element>
+					{if isNonnull($showFeedback) and $showFeedback != true and $showFeedback != false}
+						<feedback-element locale="fr" feedback-type="helpful" feedback-api="{$showFeedback}"></feedback-element>
 					{else}
 						<feedback-element locale="fr" feedback-type="helpful"></feedback-element>
 					{/if}
