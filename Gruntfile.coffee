@@ -364,6 +364,15 @@ module.exports = (grunt) ->
 					]
 					dest: "<%= coreDist %>"
 					expand: true
+				,
+					cwd: "node_modules/feedbackform.client/dist"
+					src: [
+						"*.*"
+						"!*.js.map"
+						"!index.html"
+					]
+					dest: "<%= coreDist %>/components/"
+					expand: true
 				]
 
 			deploy:

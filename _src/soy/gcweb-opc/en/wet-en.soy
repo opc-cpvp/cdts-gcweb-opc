@@ -78,7 +78,7 @@
 		<!--[if lte IE 9]>
 		<![endif]-->
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/opc-style.css' />
-		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/cms-css/feedback.css' />
+		<link rel="stylesheet" href='{call .environment data="all" /}components/feedback.css' />
 
 		{if isNonnull($webAnalytics)}
 			<script type="text/javascript">
@@ -106,7 +106,7 @@
 						paq.push(['setTrackerUrl', u + 'm.php']);
 						paq.push(['setSiteId',  '{$aa.siteId}']);
 
-						{if isNonnull($aa.customDimensions)} 
+						{if isNonnull($aa.customDimensions)}
 							{foreach $dimension in $aa.customDimensions}
 								paq.push(['setCustomDimension', {$dimension.id}, '{$dimension.value}']);
 							{/foreach}
@@ -275,98 +275,25 @@
 		{/if}
 		{if $pagedetails != false}
 		<div class="pagedetails{if isNonnull($isContainer)} container{/if}">
-			{if $showFeedback != false or $showShare != false}
+			{if isNonnull($showFeedback) or isNonnull($showShare)}
 			<div class="row mrgn-tp-sm">
-				{if $showFeedback != false}
-					{if isNonnull($showFeedback) and $showFeedback != true }
-						<div class="col-sm-6 col-md-5 col-lg-5">
-							<a href="{$showFeedback}" class="btn btn-default btn-center">Report a problem on this page</a>
-						</div>
+				{if isNonnull($showFeedback) and $showFeedback != false}
+					<div class="col-sm-6 col-md-5 col-lg-5">
+					{if $showFeedback != true}
+						<feedback-element locale="en" feedback-type="problem" feedback-api="{$showFeedback}"></feedback-element>
 					{else}
-						<div class="col-sm-6 col-md-5 col-lg-5" id="reportAProblem">
-							<details class="brdr-0" aria-labelledby="problemSection">
-								<summary class="btn btn-default" id="problemSection">Report a problem or mistake on this page</summary>
-								<div class="well row">
-									<div>
-										<div id="wb-auto-3">
-											<strong class="error" id="validationSummary2" role="alert" aria-atomic="true">
-												<span class="label label-danger">
-													<span class="prefix">Error&nbsp;1:&nbsp;</span>No selection was made. You must choose at least 1 answer.
-												</span>
-											</strong>
-											<form action="https://priv.gc.ca/en/for-individuals/" enctype="multipart/form-data" id="reportAProblemForm" method="post">
-												<input id="ProblemContentId" name="ProblemContentId" type="hidden" value="" />
-												<input name="__RequestVerificationToken" type="hidden" value="" />
-												<fieldset id="reportAProblemInputs">
-													<legend class="required"><span class="field-name">Please select all that apply </span><span class="redspan"><strong>(required)</strong></span>:</legend>
-													<div class="checkbox">
-														<label for="PageHasBrokenLink">
-															<input id="PageHasBrokenLink" name="PageHasBrokenLink" type="checkbox" value="true" />
-															<input name="PageHasBrokenLink" type="hidden" value="false" /> There are broken links.
-														</label>
-													</div>
-													<div class="checkbox">
-														<label for="PageHasSpellingOrGrammarMistakes">
-															<input id="PageHasSpellingOrGrammarMistakes" name="PageHasSpellingOrGrammarMistakes" type="checkbox" value="true" />
-															<input name="PageHasSpellingOrGrammarMistakes" type="hidden" value="false" /> The page has spelling or grammar mistakes.
-														</label>
-													</div>
-													<div class="checkbox">
-														<label for="InfoIsOutdated2">
-															<input id="InfoIsOutdated2" name="InfoIsOutdated2" type="checkbox" value="true" />
-															<input name="InfoIsOutdated2" type="hidden" value="false" /> The information is wrong or outdated.
-														</label>
-													</div>
-													<div class="checkbox">
-														<label for="OtherReason3"><input id="OtherReason3" name="OtherReason3" type="checkbox" value="true" />
-														<input name="OtherReason3" type="hidden" value="false" /> Other</label>
-														<div class="form-group" id="otherReasonComments3">
-															<label for="Comments3">Please specify (maximum of 750 characters):</label>
-															<textarea name="Comments" class="form-control" id="Comments3" maxlength="750" rows="2" cols="20"></textarea>
-														</div>
-													</div>
-												</fieldset>
-												<div id="noteAndSubmit2">
-													<div class="alert alert-info">
-														<h2 class="h5">Note</h2>
-														<ul>
-															<li>
-																<small>
-																	<strong>You will not receive a reply.</strong> For enquiries, please <a href="https://priv.gc.ca/en/contact-the-opc/">contact the Office of the Privacy Commissioner</a>.
-																</small>
-															</li>
-															<li>
-																<small>
-																	<strong>Do not include any personal information,</strong> such as your name, social insurance number (SIN), home or business address or any case or files numbers.
-																</small>
-															</li>
-															<li>
-																<small>
-																	<strong>For more information about this tool</strong>, please refer to our <a href="https://priv.gc.ca/en/privacy-and-transparency-at-the-opc/terms-and-conditions-of-use/">terms and conditions of use</a>.
-																</small>
-															</li>
-														</ul>
-													</div>
-													<div>
-														<input type="submit" class="btn btn-primary" value="Submit" aria-controls="wb-auto-3" id="btnSubmitProblem" />
-													</div>
-												</div>
-												<input name='ufprt' type='hidden' value='' />
-											</form>
-										</div>
-										<div id="reportAProblemSubmissionResults"></div>
-									</div>
-								</div>
-							</details>
-						</div>
+						<feedback-element locale="en" feedback-type="problem"></feedback-element>
 					{/if}
+					</div>
 				{/if}
-				{if $showShare != false}
-					{if isNonnull($showShare)}
-						<div class="wb-share col-sm-4 col-md-3 col-sm-offset-{if $showFeedback != false}2{else}8{/if} col-md-offset-{if $showFeedback != false}4{else}9{/if}{if $showFeedback != false} col-lg-offset-4{/if}" data-wb-share='{lb}"filter": [{foreach $item in $showShare}"{$item}"{if not isLast($item)}, {/if}{/foreach}], "lnkClass": "btn btn-default btn-block"{rb}'></div>
+				{if isNonnull($showShare) and $showShare != false}
+					<div class="col-sm-6 col-md-4 col-lg-5 col-md-offset-{if isNonnull($showFeedback) and $showFeedback != false}3{else}8{/if} col-lg-offset-{if isNonnull($showFeedback) and $showFeedback != false}2{else}7{/if}">
+					{if $showShare != true}
+						<feedback-element locale="en" feedback-type="helpful" feedback-api="{foreach $item in $showShare}{if isLast($item)}{$item}{/if}{/foreach}"></feedback-element>
 					{else}
-						<div class="wb-share col-sm-4 col-md-3 col-sm-offset-{if $showFeedback != false}2{else}8{/if} col-md-offset-{if $showFeedback != false}4{else}9{/if}{if $showFeedback != false} col-lg-offset-4{/if}" data-wb-share='{lb}"lnkClass": "btn btn-default btn-block"{rb}'></div>
+						<feedback-element locale="en" feedback-type="helpful"></feedback-element>
 					{/if}
+					</div>
 				{/if}
 			</div>
 			{/if}
@@ -572,7 +499,7 @@
 		<script src='{call .environment data="all" /}wet-boew/js/ie8-wet-boew2.min.js'></script>
 		<![endif]-->
 		<script src='{call .environment data="all" /}gcweb-opc/js/theme.min.js'></script>
-		<script src='{call .environment data="all" /}gcweb-opc/cms-scripts/feedback.js'></script>
+		<script src='{call .environment data="all" /}components/feedback.js'></script>
 		{if $exitScript == true}
 		<script src='{call .environment data="all" /}cdts/js/exitScript.js'></script>
 		<script data-id="exitScript" data-token="{$exitURL}" data-token-domains="{$exitDomains}" data-token-modal="{$displayModal}">clickA();</script>
@@ -720,7 +647,7 @@
 						paq.push(['setTrackerUrl', u + 'm.php']);
 						paq.push(['setSiteId',  '{$aa.siteId}']);
 
-						{if isNonnull($aa.customDimensions)} 
+						{if isNonnull($aa.customDimensions)}
 							{foreach $dimension in $aa.customDimensions}
 								paq.push(['setCustomDimension', {$dimension.id}, '{$dimension.value}']);
 							{/foreach}
