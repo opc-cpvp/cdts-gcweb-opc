@@ -496,7 +496,7 @@
  */
 {template .refFooter}
 		<!--[if gte IE 9 | !IE ]><!-->
-		<script src="{if $jqueryEnv=='external'}https://ajax.googleapis.com/ajax/libs/{else}{call .environment data="all" /}wet-boew/js/{/if}jquery/2.1.4/jquery.min.js"></script>
+		<script src='{if $jqueryEnv=='external'}{call .environment data="all" /}wet-boew/js/{else}{call .environment data="all" /}wet-boew/js/{/if}jquery/2.2.4/jquery.min.js'></script>
 		<script src='{call .environment data="all" /}wet-boew/js/wet-boew.min.js'></script>
 		<!--<![endif]-->
 		<!--[if lt IE 9]>
