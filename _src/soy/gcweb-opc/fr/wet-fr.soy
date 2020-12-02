@@ -202,17 +202,18 @@
 					{if $search != false}
 					<section id="wb-srch" class="col-xs-7 text-right visible-md visible-lg" aria-labelledby="search-section">
 						<h2 id="search-section">Recherche</h2>
-						<form action='{call .base data="all" /}fr/recherche' class="form-inline" enctype="multipart/form-data" method="post" name="cse-search-box" role="search">
+						<form action='{call .base data="all" /}fr/recherche' class="form-inline" enctype="multipart/form-data" method="get" name="cse-search-box" role="search">
 							<div class="form-group">
 								<label for="wb-srch-q" class="wb-inv">Recherchez le site Web</label>
 								<input id="wb-srch-q" list="wb-srch-q-ac" class="wb-srch-q form-control" name="t" type="search" value="" size="27" maxlength="150" placeholder="Rechercher dans priv.gc.ca" />
+								<input name="Page" type="hidden" value="1" />
 								<datalist id="wb-srch-q-ac">
 									<!--[if lte IE 9]><select><![endif]-->
 									<!--[if lte IE 9]></select><![endif]-->
 								</datalist>
 							</div>
 							<div class="form-group submit">
-								<button type="submit" id="wb-srch-sub" class="btn btn-primary btn-small" name="wb-srch-sub"><span class="glyphicon-search glyphicon"></span><span class="wb-inv">Recherche</span></button>
+								<button type="submit" id="wb-srch-sub" class="btn btn-primary btn-small"><span class="glyphicon-search glyphicon"></span><span class="wb-inv">Recherche</span></button>
 							</div>
 						</form>
 					</section>
