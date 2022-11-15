@@ -1,0 +1,41 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build",
+        "group": {
+            "kind": "build",
+            "isDefault": true
+        },
+        "type": "npm",
+        "script": "build",
+        "options": {
+            "cwd": "${workspaceFolder}"
+        }
+      },
+      {
+        "label": "Server",
+        "group": {
+            "kind": "none"
+        },
+        "type": "shell",
+        "command": "grunt server",
+        "options": {
+            "cwd": "${workspaceFolder}"
+        },
+        "isBackground": true,
+        "problemMatcher": {
+            "pattern": {
+                "regexp": ""
+            },
+            "background": {
+                "activeOnStart": true,
+                "beginsPattern": "Started connect web server",
+                "endsPattern": "Waiting..."
+            }
+        }
+      }
+    ]
+}
