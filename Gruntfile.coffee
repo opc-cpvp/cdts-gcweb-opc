@@ -60,35 +60,28 @@ module.exports = (grunt) ->
 	)
 
 	@registerTask(
-		"deploy"
-		"Build and deploy artifacts to cdts-sgdc-dist"
+		"build-pkg-json"
+		"Build package.json for deployment"
 		->
-			if process.env.TRAVIS_PULL_REQUEST is "false" and process.env.DIST_REPO isnt `undefined` and ( process.env.TRAVIS_TAG isnt "" or process.env.TRAVIS_BRANCH is "master" )
-				pkgOriginal = grunt.file.readJSON("package.json");
-				addToRepo = "cdts-themes-cdn";
-				writeTo = "dist/package.json";
-				pkg = {
-					name: "cdts-gcweb-opc",
-					version: pkgOriginal.version,
-					description: pkgOriginal.name.toLowerCase() + " theme"
-					repository: {
-						type: "git",
-						url: "git+https://github.com/opc-cpvp/" + addToRepo + ".git"
-					},
-					author: "opc-buildbot",
-					license: "MIT",
-					bugs: {
-						url: "https://github.com/opc-cpvp/" + pkgOriginal.name.toLowerCase() + "/issues"
-					},
-					homepage: "https://github.com/opc-cpvp/" + addToRepo + "#readme"
-				};
-				grunt.file.write(writeTo, JSON.stringify(pkg, null, 2));
-				grunt.task.run [
-					"copy:deploy"
-					"copy:release"
-					"gh-pages:travis"
-					"gh-pages:travis_cdn"
-				];
+			pkgOriginal = grunt.file.readJSON("package.json");
+			addToRepo = "cdts-themes-dist";
+			writeTo = "dist/package.json";
+			pkg = {
+				name: "cdts-gcweb-opc",
+				version: pkgOriginal.version,
+				description: pkgOriginal.name.toLowerCase() + " theme"
+				repository: {
+					type: "git",
+					url: "git+https://github.com/opc-cpvp/" + addToRepo + ".git"
+				},
+				author: "opc-buildbot",
+				license: "MIT",
+				bugs: {
+					url: "https://github.com/opc-cpvp/" + pkgOriginal.name.toLowerCase() + "/issues"
+				},
+				homepage: "https://github.com/opc-cpvp/" + addToRepo + "#readme"
+			};
+			grunt.file.write(writeTo, JSON.stringify(pkg, null, 2));
 	)
 
 	@registerTask(
