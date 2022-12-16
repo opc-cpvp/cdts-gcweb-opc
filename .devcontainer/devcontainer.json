@@ -1,0 +1,16 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/docker-existing-dockerfile
+{
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "forwardPorts": [8000],
+  "mounts": [
+    "source=cdts-gcweb-opc-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    "source=cdts-gcweb-opc-lib,target=${containerWorkspaceFolder}/lib,type=volume"
+  ],
+  "workspaceMount": "source=${localWorkspaceFolder},target=${containerWorkspaceFolder},type=bind",
+  "workspaceFolder": "/home/node/app",
+  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+  "remoteUser": "node"
+}
