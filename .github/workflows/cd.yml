@@ -50,6 +50,8 @@ jobs:
       #
       # Deploy cdts-themes dist
       #
+      - name: Dist CDN - Prepare and build package.json
+        run: grunt build-pkg-json
       - name: Dist - Applying changes
         run: |
           git clone --depth 1 https://github.com/${{ github.repository_owner }}/${{ env.REPO_DIST }}.git --branch cdts-gcweb-opc ~cdts-themes-dist
