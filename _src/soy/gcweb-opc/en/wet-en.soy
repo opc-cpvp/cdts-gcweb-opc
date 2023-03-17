@@ -81,13 +81,12 @@
 		<!--[if lt IE 9]>
 		<link href='{call .environment data="all" /}gcweb-opc/assets/favicon.ico' rel="shortcut icon" />
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/ie8-theme.min.css' />
-		<script src='{call .environment data="all" /}wet-boew/js/jquery/2.2.4/jquery.min.js'></script>
+		<script src='{call .environment data="all" /}wet-boew/js/jquery/1.11.1/jquery.min.js'></script>
 		<script src='{call .environment data="all" /}wet-boew/js/ie8-wet-boew.min.js'></script>
 		<![endif]-->
 		<!--[if lte IE 9]>
 		<![endif]-->
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/assets/css/opc-style.css' />
-		<link rel="stylesheet" href='{call .environment data="all" /}components/feedback.css' />
 
 		{if isNonnull($webAnalytics)}
 			<script type="text/javascript">
@@ -279,25 +278,30 @@
 		{if $showPostContent != false}
 		{/if}
 		{if $pagedetails != false}
+		
 		<div class="pagedetails{if isNonnull($isContainer)} container{/if}">
 			{if isNonnull($showFeedback) or isNonnull($showShare)}
 			<div class="row mrgn-tp-sm">
 				{if isNonnull($showFeedback) and $showFeedback != false}
 					<div class="col-sm-6 col-md-5 col-lg-5">
-					{if $showFeedback != true}
-						<feedback-element locale="en" feedback-type="problem" feedback-api="{$showFeedback}"></feedback-element>
-					{else}
-						<feedback-element locale="en" feedback-type="problem"></feedback-element>
-					{/if}
+						<i18n-host locale="en">
+							{if $showFeedback != true}
+								<feedback-problem  feedback-api="{$showFeedback}"></feedback-problem>
+							{else}
+								<feedback-problem></feedback-problem>
+							{/if}
+						</i18n-host>
 					</div>
 				{/if}
 				{if isNonnull($showShare) and $showShare != false}
 					<div class="col-sm-6 col-md-4 col-lg-5 col-md-offset-{if isNonnull($showFeedback) and $showFeedback != false}3{else}8{/if} col-lg-offset-{if isNonnull($showFeedback) and $showFeedback != false}2{else}7{/if}">
-					{if isNonnull($showFeedback) and $showFeedback != true and $showFeedback != false}
-						<feedback-element locale="en" feedback-type="helpful" feedback-api="{$showFeedback}"></feedback-element>
-					{else}
-						<feedback-element locale="en" feedback-type="helpful"></feedback-element>
-					{/if}
+						<i18n-host locale="en">
+							{if isNonnull($showFeedback) and $showFeedback != true and $showFeedback != false}
+								<feedback-helpful feedback-api="{$showFeedback}"></feedback-helpful>
+							{else}
+								<feedback-helpful></feedback-helpful>
+							{/if}
+						</i18n-host>
 					</div>
 				{/if}
 			</div>
@@ -498,7 +502,7 @@
  */
 {template .refFooter}
 		<!--[if gte IE 9 | !IE ]><!-->
-		<script src='{if $jqueryEnv=='external'}{call .environment data="all" /}wet-boew/js/{else}{call .environment data="all" /}wet-boew/js/{/if}jquery/2.2.4/jquery.min.js'></script>
+		<script src='{if $jqueryEnv=='external'}{call .environment data="all" /}wet-boew/js/{else}{call .environment data="all" /}wet-boew/js/{/if}jquery/2.1.4/jquery.min.js'></script>
 		<script src='{call .environment data="all" /}wet-boew/js/wet-boew.min.js'></script>
 		<!--<![endif]-->
 		<!--[if lt IE 9]>
@@ -560,7 +564,7 @@
 		<link href='{call .environment data="all" /}gcweb-opc/assets/favicon.ico' rel="shortcut icon" />
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/messages-ie.min.css' />
 		<link rel="stylesheet" href='{call .environment data="all" /}gcweb-opc/css/ie8-theme.min.css' />
-		<script src='{call .environment data="all" /}wet-boew/js/jquery/2.2.4/jquery.min.js'></script>
+		<script src='{call .environment data="all" /}wet-boew/js/jquery/1.11.1/jquery.min.js'></script>
 		<script src='{call .environment data="all" /}wet-boew/js/ie8-wet-boew.min.js'></script>
 		<![endif]-->
 		<!--[if lte IE 9]><![endif]-->
@@ -619,7 +623,7 @@
 			</div>
 		</main>
 		<!--[if gte IE 9 | !IE ]><!-->
-		<script src="{if $jqueryEnv=='external'}{call .environment data="all" /}wet-boew/js/{else}{call .environment data="all" /}wet-boew/js/{/if}jquery/2.2.4/jquery.min.js"></script>
+		<script src="{if $jqueryEnv=='external'}{call .environment data="all" /}wet-boew/js/{else}{call .environment data="all" /}wet-boew/js/{/if}jquery/2.1.4/jquery.min.js"></script>
 		<script src='{call .environment data="all" /}wet-boew/js/wet-boew.min.js'></script>
 		<!--<![endif]-->
 		<!--[if lt IE 9]>
