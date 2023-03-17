@@ -278,26 +278,30 @@
 		{if $showPostContent != false}
 		{/if}
 		{if $pagedetails != false}
-		<i18n-host locale="en">
+		
 		<div class="pagedetails{if isNonnull($isContainer)} container{/if}">
 			{if isNonnull($showFeedback) or isNonnull($showShare)}
 			<div class="row mrgn-tp-sm">
 				{if isNonnull($showFeedback) and $showFeedback != false}
 					<div class="col-sm-6 col-md-5 col-lg-5">
-						{if $showFeedback != true}
-							<feedback-problem  feedback-api="{$showFeedback}"></feedback-problem>
-						{else}
-							<feedback-problem></feedback-problem>
-						{/if}
+						<i18n-host locale="en">
+							{if $showFeedback != true}
+								<feedback-problem  feedback-api="{$showFeedback}"></feedback-problem>
+							{else}
+								<feedback-problem></feedback-problem>
+							{/if}
+						</i18n-host>
 					</div>
 				{/if}
 				{if isNonnull($showShare) and $showShare != false}
 					<div class="col-sm-6 col-md-4 col-lg-5 col-md-offset-{if isNonnull($showFeedback) and $showFeedback != false}3{else}8{/if} col-lg-offset-{if isNonnull($showFeedback) and $showFeedback != false}2{else}7{/if}">
-						{if isNonnull($showFeedback) and $showFeedback != true and $showFeedback != false}
-							<feedback-helpful feedback-api="{$showFeedback}"></feedback-helpful>
-						{else}
-							<feedback-helpful></feedback-helpful>
-						{/if}
+						<i18n-host locale="en">
+							{if isNonnull($showFeedback) and $showFeedback != true and $showFeedback != false}
+								<feedback-helpful feedback-api="{$showFeedback}"></feedback-helpful>
+							{else}
+								<feedback-helpful></feedback-helpful>
+							{/if}
+						</i18n-host>
 					</div>
 				{/if}
 			</div>
@@ -317,7 +321,6 @@
 				{/if}
 			</dl>
 		</div>
-		</i18n-host>
 		{/if}
 {/template}
 
