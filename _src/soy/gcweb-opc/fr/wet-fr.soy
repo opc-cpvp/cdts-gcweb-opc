@@ -276,7 +276,7 @@
 {template .preFooter}
 		{if $showPostContent != false}
 		{/if}
-		{if $pagedetails != false}		
+		{if $pagedetails != false}
 		<div class="pagedetails{if isNonnull($isContainer)} container{/if}">
 			{if isNonnull($showFeedback) or isNonnull($showShare)}
 			<div class="row mrgn-tp-sm">
@@ -384,7 +384,6 @@
 							<p>Soyez informés des annonces et des activités du Commissariat à la protection de la vie privée du Canada de même que des événements auxquels il participe.</p>
 							<ul class="list-unstyled">
 								<li><a href='{call .base data="all" /}fr/nouvelles-du-commissariat/nouvelles-et-annonces'>Nouvelles et annonces</a></li>
-								<li><a href='{call .base data="all" /}fr/nouvelles-du-commissariat/evenements-lies-a-la-protection-de-la-vie-privee/'>Événements liés à la protection de la vie privée</a></li>
 								<li><a href='{call .base data="all" /}fr/nouvelles-du-commissariat/allocutions/'>Allocutions</a></li>
 							</ul>
 						</section>
@@ -424,7 +423,7 @@
 								<li><span class="fa fa-comments"></span> <a href='{call .base data="all" /}fr/blogue'>Blogue du Commissariat</a></li>
 								<li><span class="fa fa-linkedin-square"></span> <a href="https://www.linkedin.com/company/office-of-the-privacy-commissioner-of-canada">LinkedIn du Commissariat</a></li>
 								<li><span class="fa fa-rss-square"></span> <a href='{call .base data="all" /}fr/fils-rss-du-commissariat/'>Fils RSS du Commissariat</a></li>
-								<li><span class="fa fa-twitter"></span> <a href="https://twitter.com/PrivacyPrivee">Twitter du Commissariat</a></li>
+								<li><span class="opc-icon"><img src="{call .environment data="all" /}gcweb-opc/assets/x.svg" alt="CompteX" title="CompteX" /> </span> <a href="https://x.com/PriveePrivacy">@CompteX du Commissariat</a></li>
 								<li><span class="fa fa-youtube"></span> <a href="https://www.youtube.com/user/PrivacyComm">Chaîne YouTube du Commissariat</a></li>
 							</ul>
 						</section>

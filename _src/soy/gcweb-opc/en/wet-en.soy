@@ -278,7 +278,7 @@
 		{if $showPostContent != false}
 		{/if}
 		{if $pagedetails != false}
-		
+
 		<div class="pagedetails{if isNonnull($isContainer)} container{/if}">
 			{if isNonnull($showFeedback) or isNonnull($showShare)}
 			<div class="row mrgn-tp-sm">
@@ -386,7 +386,6 @@
 							<p>Get updates about the OPC’s announcements and activities, as well as the events in which we participate.</p>
 							<ul class="list-unstyled">
 								<li><a href='{call .base data="all" /}en/opc-news/news-and-announcements/'>News and announcements</a></li>
-								<li><a href='{call .base data="all" /}en/opc-news/privacy-events/'>Privacy events</a></li>
 								<li><a href='{call .base data="all" /}en/opc-news/speeches/'>Speeches</a></li>
 							</ul>
 						</section>
@@ -426,7 +425,7 @@
 								<li><span class="fa fa-comments"></span> <a href='{call .base data="all" /}en/blog'>OPC Blog</a></li>
 								<li><span class="fa fa-linkedin-square"></span> <a href="https://www.linkedin.com/company/office-of-the-privacy-commissioner-of-canada">OPC LinkedIn</a></li>
 								<li><span class="fa fa-rss-square"></span> <a href='{call .base data="all" /}en/rss-feeds/'>OPC RSS feeds</a></li>
-								<li><span class="fa fa-twitter"></span> <a href="https://twitter.com/PrivacyPrivee">OPC Twitter</a></li>
+								<li><span class="opc-icon"><img src="{call .environment data="all" /}gcweb-opc/assets/x.svg" alt="X Account" title="X Account" /> </span> <a href="https://x.com/PrivacyPrivee">OPC @XAccount</a></li>
 								<li><span class="fa fa-youtube"></span> <a href="https://www.youtube.com/user/PrivacyComm">OPC YouTube channel</a></li>
 							</ul>
 						</section>
