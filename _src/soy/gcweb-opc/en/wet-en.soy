@@ -592,14 +592,13 @@
 							<img src='{call .environment data="all" /}gcweb-opc/assets/opc-blk-fr.png' class="img img-responsive" alt="Commissariat à la protection de la vie privée du Canada / Office of the Privacy Commissioner" />
 						</div>
 					</div>
-					<div class="row">
+					<div class="row cdts-splash">
 						<section class="col-xs-6 text-right" lang="fr">
 							{if isNonnull($nameFra)}
 								<h2>{$nameFra}</h2>
 							{else}
 								<h2 class="wb-inv">Commissariat à la protection de la vie privée du Canada</h2>
 							{/if}
-							<p><a href="{$indexFra}" class="btn btn-primary" lang="fr">Français</a></p>
 						</section>
 						<section class="col-xs-6" lang="en">
 							{if isNonnull($nameEng)}
@@ -607,10 +606,18 @@
 							{else}
 								<h2 class="wb-inv">Office of the Privacy Commissioner</h2>
 							{/if}
-							<p><a href="{$indexEng}" class="btn btn-primary" lang="en">English</a></p>
 						</section>
 					</div>
-
+					<row class="text-center">
+						<ul class="list-inline lst-spcd">
+							<li>
+								<a href="{$indexFra}" class="btn btn-primary" lang="fr">Français</a>
+							</li>
+							<li>
+								<a href="{$indexEng}" class="btn btn-primary" lang="en">English</a>
+							</li>
+						</ul>
+					</row>
 				</div>
 				<div class="sp-bx-bt col-xs-12">
 					<div class="row">
